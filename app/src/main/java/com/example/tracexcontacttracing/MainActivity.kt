@@ -19,7 +19,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.blemodule.*
+import com.example.tracexcontacttracing.bottomnav.fragments.CheckinFragment
+import com.example.tracexcontacttracing.bottomnav.fragments.ContacttracingFragment
+import com.example.tracexcontacttracing.bottomnav.fragments.NotificationFragment
+import com.example.tracexcontacttracing.bottomnav.fragments.UpdatesFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickListener {
@@ -50,6 +56,23 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val updatesFragment = UpdatesFragment()
+        val contacttracingFragment = ContacttracingFragment()
+        val notificationFragment = NotificationFragment()
+        val checkinFragment = CheckinFragment()
+
+        makeCurrentFragment(updatesFragment)
+
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            when (it.itemId){
+                R.id.ic_updatetab -> makeCurrentFragment(updatesFragment)
+                R.id.ic_contacttracing -> makeCurrentFragment(contacttracingFragment)
+                R.id.ic_notification -> makeCurrentFragment(notificationFragment)
+                R.id.ic_checkin -> makeCurrentFragment(checkinFragment)
+            }
+            true
+        }
+
         mBtnReadConnectionChar = findViewById<Button>(R.id.btn_read_connection)
         mBtnReadEmergency = findViewById(R.id.btn_read_emergency)
         mBtnReadBatteryLevel = findViewById(R.id.btn_read_battery)
@@ -66,6 +89,12 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
         checkLocationPermission()
     }
+
+    private fun makeCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.f1_wrapper, fragment)
+            commit()
+        }
 
     /**
      * Check the Location Permission before calling the BLE API's

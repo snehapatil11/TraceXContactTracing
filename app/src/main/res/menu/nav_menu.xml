@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ic_updatetab"
+        android:icon="@drawable/ic_updatestab"
+        android:title="COVID Updates" />
+
+    <item
+        android:id="@+id/ic_contacttracing"
+        android:icon="@drawable/ic_contacttracing"
+        android:title="Contact Tracing"/>
+
+    <item
+        android:id="@+id/ic_checkin"
+        android:icon="@drawable/ic_checkin"
+        android:title="COVID CheckIn"/>
+
+    <item
+        android:id="@+id/ic_notification"
+        android:icon="@drawable/ic_notification"
+        android:title="Exposure Alerts"/>
+
+</menu>

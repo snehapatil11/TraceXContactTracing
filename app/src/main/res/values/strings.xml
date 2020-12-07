@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TraceXContactTracing</string>
+    <string name="app_name">TraceX</string>
     <string name="location_permission_disabled">Location Permission Disabled</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
@@ -13,5 +13,7 @@
     <string name="char_uuid_catch">Your Catch UUID</string>
     <string name="char_uuid_catch_all">Your Catch All UUID</string>
     <string name="char_uuid_missed_calls">Your Missed call UUID</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
