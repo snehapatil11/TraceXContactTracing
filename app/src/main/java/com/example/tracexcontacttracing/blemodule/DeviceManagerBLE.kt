@@ -143,6 +143,7 @@ object DeviceManagerBLE {
         mOnDeviceScanListener = onDeviceScanListener
     }
 
+
     /**
      * Scan The BLE Device
      * Check the available BLE devices in the Surrounding

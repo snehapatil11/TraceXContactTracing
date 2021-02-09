@@ -1,5 +1,6 @@
 package com.example.tracexcontacttracing
 
+
 import android.Manifest
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
@@ -19,10 +20,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.example.tracexcontacttracing.Provider.BluetoothManagerProvider
 import com.example.tracexcontacttracing.blemodule.*
+import com.example.tracexcontacttracing.data.Enums
 
 
 class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickListener {
+
+    companion object {
+        const val REQUEST_NONE = 0
+        const val REQUEST_LOCATION = 1
+        const val REQUEST_CHECK_TRACKING_SETTINGS = 2
+        private const val REQUEST_BLUETOOTH = 3
+    }
+
+    private val deviceManager by BluetoothManagerProvider()
+    private var bluetoothAlert: androidx.appcompat.app.AlertDialog.Builder? = null
+
     private lateinit var mBtnReadConnectionChar: Button
     private lateinit var mBtnReadBatteryLevel: Button
     private lateinit var mBtnReadEmergency: Button
@@ -39,7 +53,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
         // If the application already know the Mac address, we can simply call connect device
 
         mDeviceAddress = deviceDataList.mDeviceAddress
-        ConnectionManagerBLE.connect(deviceDataList.mDeviceAddress)
+        //ConnectionManagerBLE.connect(deviceDataList.mDeviceAddress)
 
     }
 
@@ -151,34 +165,56 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
      *After receive the Location Permission, the Application need to initialize the
      * BLE Module and BLE Service
      */
-    private fun initBLEModule() {
+    /*private fun initBLEModule() {
         // BLE initialization
         if (!DeviceManagerBLE.init(this)) {
             Toast.makeText(this, "BLE NOT SUPPORTED", Toast.LENGTH_SHORT).show()
             return
         }
-        registerServiceReceiver()
-        DeviceManagerBLE.setListener(this)
-
         if (!DeviceManagerBLE.isEnabled()) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
+        startService(Intent(this, BLEService::class.java))
+        //ConnectionManagerBLE.initBLEService(this@MainActivity)
+    }*/
 
-        ConnectionManagerBLE.initBLEService(this@MainActivity)
+    private fun checkBluetooth(): Enums = deviceManager.checkBluetooth()
+
+    private fun initBLEModule() {
+        when (checkBluetooth()) {
+            Enums.ENABLED -> startService(Intent(this, BLEService::class.java))
+            Enums.DISABLED -> showBluetoothDisabledError()
+            Enums.NOT_FOUND -> showBluetoothNotFoundError()
+        }
     }
 
-
-    /**
-     * Register GATT update receiver
-     */
-    private fun registerServiceReceiver() {
-        this.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter())
+    private fun showBluetoothDisabledError() {
+        if (bluetoothAlert == null)
+            bluetoothAlert = androidx.appcompat.app.AlertDialog.Builder(this).apply {
+                setTitle(R.string.bluetooth_turn_off)
+                setMessage(R.string.bluetooth_turn_off_description)
+                setPositiveButton(R.string.enable) { _, _ ->
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableBtIntent, REQUEST_BLUETOOTH)
+                    bluetoothAlert = null
+                }
+                setOnCancelListener { bluetoothAlert = null }
+                show()
+            }
     }
 
+    private fun showBluetoothNotFoundError() {
+        androidx.appcompat.app.AlertDialog.Builder(this).apply {
+            setTitle(R.string.bluetooth_do_not_support)
+            setMessage(R.string.bluetooth_do_not_support_description)
+            setCancelable(false)
+            setNegativeButton(R.string.done) { _, _ -> }
+            show()
+        }
+    }
 
-
-    private val mGattUpdateReceiver = object : BroadcastReceiver() {
+    /*private val mGattUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             when {
@@ -210,7 +246,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Intent filter for Handling BLEService broadcast.
@@ -226,27 +262,10 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
         return intentFilter
     }
 
-    /**
-     * Unregister GATT update receiver
-     */
-    private fun unRegisterServiceReceiver() {
-        try {
-            this.unregisterReceiver(mGattUpdateReceiver)
-        } catch (e: Exception) {
-            //May get an exception while user denies the permission and user exists the app
-            Log.e(TAG, e.message)
-        }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        ConnectionManagerBLE.disconnect()
-        unRegisterServiceReceiver()
-    }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
+  /*      when (v?.id) {
             R.id.btn_scan ->
                 scanDevice(false)
             R.id.btn_read_connection ->
@@ -258,9 +277,9 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
                 readEmergencyGatt()
 
 
-        }
+        }*/
     }
-
+/*
 
     private fun readMissedConnection() {
         ConnectionManagerBLE.readMissedConnection(getString(R.string.char_uuid_missed_calls))
@@ -274,10 +293,10 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
         ConnectionManagerBLE.readEmergencyGatt(getString(R.string.char_uuid_emergency))
     }
 
-    /**
+    *//**
      * Scan the BLE device if the device address is null
      * else the app will try to connect with device with existing device address.
-     */
+     *//*
     private fun scanDevice(isContinuesScan: Boolean) {
         if (!mDeviceAddress.isNullOrEmpty()) {
             connectDevice()
@@ -286,9 +305,9 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
         }
     }
 
-    /**
+    *//**
      * Connect the application with BLE device with selected device address.
-     */
+     *//*
     private fun connectDevice() {
         Handler().postDelayed({
             ConnectionManagerBLE.initBLEService(this@MainActivity)
@@ -298,6 +317,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
                 Toast.makeText(this@MainActivity, "DEVICE CONNECTION FAILED", Toast.LENGTH_SHORT).show()
             }
         }, 100)
-    }
+    }*/
 
 }

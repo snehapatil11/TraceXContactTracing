@@ -1,3 +1,4 @@
+/*
 package com.example.tracexcontacttracing.blemodule;
 
 import android.bluetooth.BluetoothGattCharacteristic
@@ -29,9 +30,11 @@ object ConnectionManagerBLE {
         }
     }
 
-    /**
+    */
+/**
      * Initialize Bluetooth service.
-     */
+     *//*
+
     fun initBLEService(context: Context) {
         try {
 
@@ -51,9 +54,11 @@ object ConnectionManagerBLE {
 
     }
 
-    /**
+    */
+/**
      * Unbind BLE Service
-     */
+     *//*
+
     fun unBindBLEService(context: Context) {
 
         if (mServiceConnection != null && isBind) {
@@ -63,9 +68,11 @@ object ConnectionManagerBLE {
         mBLEService = null
     }
 
-    /**
+    */
+/**
      * Connect to a BLE Device
-     */
+     *//*
+
     fun connect(deviceAddress: String): Boolean {
         var result = false
 
@@ -77,9 +84,11 @@ object ConnectionManagerBLE {
 
     }
 
-    /**
+    */
+/**
      * Disconnect
-     */
+     *//*
+
     fun disconnect() {
         if (null != mBLEService) {
             mBLEService!!.disconnect()
@@ -97,9 +106,11 @@ object ConnectionManagerBLE {
 
 
 
-    /**
+    */
+/**
      * Write BLE Characteristic.
-     */
+     *//*
+
     private fun writeBLECharacteristic(characteristic: BluetoothGattCharacteristic?) {
         if (null != characteristic) {
             if (mBLEService != null) {
@@ -132,9 +143,11 @@ object ConnectionManagerBLE {
         }
     }
 
-    /**
+    */
+/**
      * Write MLDP Characteristic.
-     */
+     *//*
+
     private fun readMLDPCharacteristic(characteristic: BluetoothGattCharacteristic?) {
         if (null != characteristic) {
             if (mBLEService != null) {
@@ -144,9 +157,11 @@ object ConnectionManagerBLE {
     }
 
 
-    /**
+    */
+/**
      * findBLEGattService
-     */
+     *//*
+
     fun findBLEGattService(mContext: Context) {
 
         if (mBLEService == null) {
@@ -210,3 +225,4 @@ object ConnectionManagerBLE {
         return gattCharacteristic
     }
 }
+*/
