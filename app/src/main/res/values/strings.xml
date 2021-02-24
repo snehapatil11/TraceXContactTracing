@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TraceXContactTracing</string>
+    <string name="app_name">TraceX</string>
     <string name="location_permission_disabled">Location Permission Disabled</string>
     <string name="location_permission_not_granted">Location Permission Granted</string>
     <string name="btn_scan">Scan</string>
@@ -11,6 +11,8 @@
     <string name="char_uuid_catch">Your Catch UUID</string>
     <string name="char_uuid_catch_all">Your Catch All UUID</string>
     <string name="char_uuid_missed_calls">Your Missed call UUID</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="bluetooth_turn_off">Bluetooth is powered off</string>
     <string name="bluetooth_turn_off_description">Please turn on Bluetooth to enable automatic anonymous exposure tracing!</string>
