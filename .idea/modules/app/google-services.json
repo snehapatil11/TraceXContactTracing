@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "533951881022",
+    "project_id": "tracexcontacttracing",
+    "storage_bucket": "tracexcontacttracing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533951881022:android:91c038ebf06e7f7da1166f",
+        "android_client_info": {
+          "package_name": "com.example.tracexcontacttracing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533951881022-8r5ph72p50uio32qd15jt77rilccuso6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tracexcontacttracing",
+            "certificate_hash": "5e1afd502b1c5cf2a485368fdd609575b8dcf749"
+          }
+        },
+        {
+          "client_id": "533951881022-6bpr8m4t630ikn3hnncv8r0c5l8a1pl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeVKQxmfc2b2WCIJWUwBxr-dF2mLAIneU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533951881022-6bpr8m4t630ikn3hnncv8r0c5l8a1pl3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
