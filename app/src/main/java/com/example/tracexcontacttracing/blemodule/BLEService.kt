@@ -97,12 +97,12 @@ class BLEService: Service() {
 
     private fun onBleDeviceFound(result: ScanResult) {
         peripherals[result.device]?.let { peripheralData ->
-            if (System.currentTimeMillis() - peripheralData.date.time < 5000) {
+            if (System.currentTimeMillis() - peripheralData.date.time < 50000) {
                 /*Log.v(
                     SCAN_TAG,
                     "Not connecting to ${result.device.address} yet"
                 )*/
-                //print result.device.address
+                println(result.device.address)
                 return
             }
         }
