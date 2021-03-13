@@ -4,15 +4,12 @@ package com.example.tracexcontacttracing
 import android.Manifest
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
@@ -31,8 +28,10 @@ import com.example.tracexcontacttracing.bottomnav.fragments.CheckinFragment
 import com.example.tracexcontacttracing.bottomnav.fragments.ContacttracingFragment
 import com.example.tracexcontacttracing.bottomnav.fragments.NotificationFragment
 import com.example.tracexcontacttracing.bottomnav.fragments.UpdatesFragment
+import com.example.tracexcontacttracing.data.DeviceEntity
+import com.example.tracexcontacttracing.database.RoomDb
 import kotlinx.android.synthetic.main.activity_main.*
-
+import java.time.LocalDateTime
 
 
 class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickListener {
@@ -91,16 +90,16 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
             true
         }
 
-        mBtnReadConnectionChar = findViewById<Button>(R.id.btn_read_connection)
-        mBtnReadEmergency = findViewById(R.id.btn_read_emergency)
-        mBtnReadBatteryLevel = findViewById(R.id.btn_read_battery)
+//        mBtnReadConnectionChar = findViewById<Button>(R.id.btn_read_connection)
+//        mBtnReadEmergency = findViewById(R.id.btn_read_emergency)
+//        mBtnReadBatteryLevel = findViewById(R.id.btn_read_battery)
 
         findViewById<View>(R.id.btn_scan).setOnClickListener(this)
-        mBtnReadConnectionChar.setOnClickListener(this)
+//        mBtnReadConnectionChar.setOnClickListener(this)
         //mBtnWriteEmergency.setOnClickListener(this)
 
-        mBtnReadEmergency.setOnClickListener(this)
-        mBtnReadBatteryLevel.setOnClickListener(this)
+//        mBtnReadEmergency.setOnClickListener(this)
+//        mBtnReadBatteryLevel.setOnClickListener(this)
 
         //mBtnWriteBatteryLevel.setOnClickListener(this)
         //mBtnWriteConnection.setOnClickListener(this)
