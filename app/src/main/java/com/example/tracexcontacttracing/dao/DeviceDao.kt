@@ -5,7 +5,7 @@ import com.example.tracexcontacttracing.data.DeviceEntity
 
 @Dao
 interface DeviceDao {
-    @Query("SELECT * FROM device ORDER BY id desc")
+    @Query("SELECT * FROM device")
     fun getDeviceData(): List<DeviceEntity>?
 
     @Insert

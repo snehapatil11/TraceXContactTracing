@@ -1,9 +1,11 @@
 package com.example.tracexcontacttracing
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.example.tracexcontacttracing.database.RoomDb
+import kotlinx.android.synthetic.main.activity_get_data.*
 import java.lang.StringBuilder
 
 class GetData : AppCompatActivity() {
@@ -12,6 +14,7 @@ class GetData : AppCompatActivity() {
         setContentView(R.layout.activity_get_data)
 
         // Read data
+//        RoomDb.getAppDatabase(this)?.clearAllTables()
         val deviceDao = RoomDb.getAppDatabase(this)?.deviceDao()
         val devices = deviceDao?.getDeviceData()
 
@@ -24,7 +27,6 @@ class GetData : AppCompatActivity() {
 
         println(sb.toString())
 
-        val result: TextView = findViewById(R.id.textViewResult)
-        result.text = sb.toString()
+        textViewResult.text = sb.toString()
     }
 }

@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.tracexcontacttracing.GetData
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.DeviceEntity
@@ -71,25 +70,21 @@ class CheckinFragment : Fragment() {
             }
     }
 
-    fun saveData() {
-//        val deviceToken: EditText = findViewById(R.id.editViewDeviceToken)
-//        val deviceId: EditText = findViewById(R.id.editViewDeviceId)
-
+    private fun saveData() {
         val deviceTokenText = editViewDeviceToken.text.toString().trim()
         val deviceIdText = editViewDeviceId.text.toString().trim()
 
         // TODO check input
-        val device = DeviceEntity(0, deviceTokenText, deviceIdText, System.currentTimeMillis(), System.currentTimeMillis())
+        val device = DeviceEntity(deviceTokenText, deviceIdText, System.currentTimeMillis(), System.currentTimeMillis())
 
         val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
         val id = deviceDao?.insert(device)
 
-        println("saved user $device with id=$id")
+        println("saved device $device with id=$id")
 
 //        Toast.makeText(this, "Data Saved", Toast.LENGTH_SHORT).show()
 
-        val intent: Intent = Intent(getActivity(), GetData::class.java);
+        val intent = Intent(activity, GetData::class.java);
         startActivity(intent);
-//        startActivity(Intent(this, GetData::class.java))
     }
 }

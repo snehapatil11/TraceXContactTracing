@@ -7,7 +7,7 @@ import android.content.Context
 import com.example.tracexcontacttracing.dao.DeviceDao
 import com.example.tracexcontacttracing.data.DeviceEntity
 
-@Database(entities = [DeviceEntity::class], version = 1)
+@Database(entities = [DeviceEntity::class], version = 2)
 abstract class RoomDb : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao?
 
@@ -20,7 +20,7 @@ abstract class RoomDb : RoomDatabase() {
                     context.applicationContext,
                     RoomDb::class.java,
                     "demo_db"
-                ).allowMainThreadQueries().build()
+                ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
             }
 
             return INSTANCE
