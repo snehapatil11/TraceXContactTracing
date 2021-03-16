@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".bottomnav.fragments.CheckinFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="COVID CheckIn"
             android:layout_centerInParent="true"/>
-    </RelativeLayout>
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/editViewDeviceToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="20sp"
+            android:background="@drawable/edittext_background"
+            android:hint="Device Token"
+            android:padding="20sp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/editViewDeviceId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="20sp"
+            android:background="@drawable/edittext_background"
+            android:hint="Device ID"
+            android:padding="20sp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30sp"
+            android:background="@color/cardview_dark_background"
+            android:text="Save"
+            android:textColor="#fff" />
+
+</LinearLayout>
