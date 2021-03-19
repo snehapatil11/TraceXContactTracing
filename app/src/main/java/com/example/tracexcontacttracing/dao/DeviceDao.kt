@@ -8,8 +8,7 @@ interface DeviceDao {
     @Query("SELECT * FROM device")
     fun getDeviceData(): List<DeviceEntity>?
 
-    @Insert
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(device: DeviceEntity): Long
 
     @Delete

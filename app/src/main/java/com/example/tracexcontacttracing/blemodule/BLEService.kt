@@ -20,6 +20,10 @@ import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.Enums
 import java.util.*
 import kotlin.experimental.and
+import kotlin.math.pow
+import com.example.tracexcontacttracing.data.DeviceEntity
+import com.example.tracexcontacttracing.database.RoomDb
+import java.lang.Math.pow
 
 class BLEService: Service() {
 
@@ -27,6 +31,23 @@ class BLEService: Service() {
     private val peripherals = mutableMapOf<BluetoothDevice, PeripheralData>()
     private var bluetoothState: Int = -1
     //private val deviceManager: DeviceManager? = null
+
+    //when the device was first seen
+    private val firstSeenTimeMap = mutableMapOf<String, Long>()
+
+    //when the device was last seen
+    private val lastSeenTimeMap = mutableMapOf<String, Long>()
+
+    private val distanceMap = mutableMapOf<String, List<Double>>()
+    private val MIN_EXPOSURE_TIME = 15000 //in milliseconds
+    private val MIN_EXPOSURE_DISTANCE = 6 //in feet
+    //difference between current time and last seen time for the device to be not in the periphery
+    private val DISAPPEAR_TIME = 20000 //in milliseconds
+
+    // if the difference between end time of the data and current time is less than this time then delete that record from the database
+    private val MAX_TIME_DIFF: Long = 120000
+
+
 
     private val bluetoothReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -96,8 +117,8 @@ class BLEService: Service() {
     }
 
     private fun onBleDeviceFound(result: ScanResult) {
-        peripherals[result.device]?.let { peripheralData ->
-            if (System.currentTimeMillis() - peripheralData.date.time < 50000) {
+        /*peripherals[result.device]?.let { peripheralData ->
+            if (System.currentTimeMillis() - peripheralData.date.time > 100000) {
                 /*Log.v(
                     SCAN_TAG,
                     "Not connecting to ${result.device.address} yet"
@@ -105,7 +126,44 @@ class BLEService: Service() {
                 println(result.device.address)
                 return
             }
+        }*/
+
+        val deviceName = result.device.name
+        val deviceId = result.device.address
+
+        val distance = (10.0.pow((-69 - (result.rssi)) / (10.0 * 2)) * 3.28084)/100
+
+        if (!firstSeenTimeMap.containsKey(deviceId)) {
+            firstSeenTimeMap[deviceId] = System.currentTimeMillis()
+            distanceMap[deviceId] = mutableListOf(distance)
+        } else {
+            lastSeenTimeMap[deviceId] = System.currentTimeMillis()
+            (distanceMap[deviceId] as MutableList<Double>?)?.add(distance)
         }
+
+        if (firstSeenTimeMap.containsKey(deviceId) && lastSeenTimeMap.containsKey(deviceId)) {
+            //exposure = listSeenTime - firstSeenTime
+            val exposureTime =
+                firstSeenTimeMap[deviceId]?.let { lastSeenTimeMap[deviceId]?.minus(it) }
+            //average distance from the list of distances
+            val avgDistance = distanceMap[deviceId]?.average()
+
+            if (exposureTime != null && avgDistance != null) {
+                if (exposureTime > MIN_EXPOSURE_TIME && avgDistance < MIN_EXPOSURE_DISTANCE) {
+                    firstSeenTimeMap[deviceId]?.let {
+                        lastSeenTimeMap[deviceId]?.let { it1 ->
+
+                            val device = DeviceEntity("deviceName", deviceId, System.currentTimeMillis(), System.currentTimeMillis())
+
+                            val deviceDao = RoomDb.getAppDatabase(this.baseContext!!)?.deviceDao()
+                            val id = deviceDao?.insert(device)
+                            println("saved device $device with id=$id")
+                        }
+                    }
+                }
+            }
+        }
+
 
         peripherals[result.device] = PeripheralData(result.rssi, Date())
         if (deviceManager?.connectDevice(result)!!) {
