@@ -39,7 +39,7 @@ class BLEService: Service() {
     private val lastSeenTimeMap = mutableMapOf<String, Long>()
 
     private val distanceMap = mutableMapOf<String, List<Double>>()
-    private val MIN_EXPOSURE_TIME = 15000 //in milliseconds
+    private val MIN_EXPOSURE_TIME = 120000 //in milliseconds
     private val MIN_EXPOSURE_DISTANCE = 6 //in feet
     //difference between current time and last seen time for the device to be not in the periphery
     private val DISAPPEAR_TIME = 20000 //in milliseconds
@@ -131,7 +131,7 @@ class BLEService: Service() {
         val deviceName = result.device.name
         val deviceId = result.device.address
 
-        val distance = (10.0.pow((-69 - (result.rssi)) / (10.0 * 2)) * 3.28084)/100
+        val distance = (10.0.pow((-69 - (result.rssi)) / (10.0 * 4)) * 3.28084)/100
 
         if (!firstSeenTimeMap.containsKey(deviceId)) {
             firstSeenTimeMap[deviceId] = System.currentTimeMillis()
@@ -143,8 +143,7 @@ class BLEService: Service() {
 
         if (firstSeenTimeMap.containsKey(deviceId) && lastSeenTimeMap.containsKey(deviceId)) {
             //exposure = listSeenTime - firstSeenTime
-            val exposureTime =
-                firstSeenTimeMap[deviceId]?.let { lastSeenTimeMap[deviceId]?.minus(it) }
+            val exposureTime = firstSeenTimeMap[deviceId]?.let { lastSeenTimeMap[deviceId]?.minus(it) }
             //average distance from the list of distances
             val avgDistance = distanceMap[deviceId]?.average()
 
