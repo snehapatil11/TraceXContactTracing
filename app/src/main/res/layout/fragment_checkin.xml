@@ -36,6 +36,18 @@
             android:padding="20sp"
             android:singleLine="true" />
 
+        <EditText
+            android:id="@+id/editViewDevicesData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="20sp"
+            android:background="@drawable/edittext_background"
+            android:hint="Devices"
+            android:padding="20sp"
+            android:singleLine="true" />
+
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
@@ -44,6 +56,15 @@
             android:layout_marginTop="30sp"
             android:background="@color/cardview_dark_background"
             android:text="Save"
+            android:textColor="#fff" />
+        <Button
+            android:id="@+id/getButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30sp"
+            android:background="@color/cardview_dark_background"
+            android:text="Get Devices"
             android:textColor="#fff" />
 
 </LinearLayout>

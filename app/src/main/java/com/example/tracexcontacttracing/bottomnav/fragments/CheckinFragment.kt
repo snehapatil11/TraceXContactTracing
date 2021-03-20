@@ -10,8 +10,10 @@ import com.example.tracexcontacttracing.GetData
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
+import kotlinx.android.synthetic.main.activity_get_data.*
 import kotlinx.android.synthetic.main.fragment_checkin.*
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
+import java.lang.StringBuilder
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +46,9 @@ class CheckinFragment : Fragment() {
 
         view.saveButton.setOnClickListener {
             saveData()
+        }
+        view.getButton.setOnClickListener {
+            getData()
         }
 
         // Inflate the layout for this fragment
@@ -86,5 +91,22 @@ class CheckinFragment : Fragment() {
 
         val intent = Intent(activity, GetData::class.java);
         startActivity(intent);
+    }
+    public fun getData(){
+        // Read data
+//        RoomDb.getAppDatabase(this)?.clearAllTables()
+        val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
+        val devices = deviceDao?.getDeviceData()
+
+        //println("Start getting data")
+        //println(devices)
+        val sb = StringBuilder()
+        devices?.forEach {
+            sb.append(it.toString())
+        }
+
+        println(sb.toString())
+
+        editViewDevicesData.setText(sb.toString())
     }
 }

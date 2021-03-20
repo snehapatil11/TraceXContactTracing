@@ -46,13 +46,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
     private val deviceManager by BluetoothManagerProvider()
     private var bluetoothAlert: androidx.appcompat.app.AlertDialog.Builder? = null
 
-    /*private lateinit var mBtnReadConnectionChar: Button
-    private lateinit var mBtnReadBatteryLevel: Button
-    private lateinit var mBtnReadEmergency: Button
-    private lateinit var mBtnWriteEmergency: Button
-    private lateinit var mBtnWriteConnection: Button
-    private lateinit var mBtnWriteBatteryLevel: Button
-    private lateinit var mTvResult: TextView*/
 
     private var mDeviceAddress: String = ""
 
@@ -90,21 +83,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
             true
         }
 
-
-/*      mBtnReadConnectionChar = findViewById<Button>(R.id.btn_read_connection)
-//      mBtnReadEmergency = findViewById(R.id.btn_read_emergency)
-//      mBtnReadBatteryLevel = findViewById(R.id.btn_read_battery)
-
-
-        findViewById<View>(R.id.btn_scan).setOnClickListener(this)
-        mBtnReadConnectionChar.setOnClickListener(this)
-        mBtnWriteEmergency.setOnClickListener(this)
-
-//      mBtnReadEmergency.setOnClickListener(this)
-//      mBtnReadBatteryLevel.setOnClickListener(this)
-
-        mBtnWriteBatteryLevel.setOnClickListener(this)
-        mBtnWriteConnection.setOnClickListener(this)*/
 
         checkLocationPermission()
     }
@@ -315,17 +293,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
     }
 /*
 
-    private fun readMissedConnection() {
-        ConnectionManagerBLE.readMissedConnection(getString(R.string.char_uuid_missed_calls))
-    }
-
-    private fun readBatteryLevel() {
-        ConnectionManagerBLE.readBatteryLevel(getString(R.string.char_uuid_emergency))
-    }
-
-    private fun readEmergencyGatt() {
-        ConnectionManagerBLE.readEmergencyGatt(getString(R.string.char_uuid_emergency))
-    }
 
     *//**
      * Scan the BLE device if the device address is null
