@@ -131,28 +131,32 @@ class BLEService: Service() {
         val deviceName = result.device.name
         val deviceId = result.device.address
 
+        val manuData: ByteArray =
+            result.scanRecord?.getManufacturerSpecificData(1023) ?: "N.A".toByteArray()
+        val advertisingUUID = String(manuData, Charsets.UTF_8)
+
         val distance = (10.0.pow((-69 - (result.rssi)) / (10.0 * 4)) * 3.28084)/100
 
-        if (!firstSeenTimeMap.containsKey(deviceId)) {
-            firstSeenTimeMap[deviceId] = System.currentTimeMillis()
-            distanceMap[deviceId] = mutableListOf(distance)
+        if (!firstSeenTimeMap.containsKey(advertisingUUID)) {
+            firstSeenTimeMap[advertisingUUID] = System.currentTimeMillis()
+            distanceMap[advertisingUUID] = mutableListOf(distance)
         } else {
-            lastSeenTimeMap[deviceId] = System.currentTimeMillis()
-            (distanceMap[deviceId] as MutableList<Double>?)?.add(distance)
+            lastSeenTimeMap[advertisingUUID] = System.currentTimeMillis()
+            (distanceMap[advertisingUUID] as MutableList<Double>?)?.add(distance)
         }
 
-        if (firstSeenTimeMap.containsKey(deviceId) && lastSeenTimeMap.containsKey(deviceId)) {
+        if (firstSeenTimeMap.containsKey(advertisingUUID) && lastSeenTimeMap.containsKey(advertisingUUID)) {
             //exposure = listSeenTime - firstSeenTime
-            val exposureTime = firstSeenTimeMap[deviceId]?.let { lastSeenTimeMap[deviceId]?.minus(it) }
+            val exposureTime = firstSeenTimeMap[advertisingUUID]?.let { lastSeenTimeMap[advertisingUUID]?.minus(it) }
             //average distance from the list of distances
-            val avgDistance = distanceMap[deviceId]?.average()
+            val avgDistance = distanceMap[advertisingUUID]?.average()
 
             if (exposureTime != null && avgDistance != null) {
                 if (exposureTime > MIN_EXPOSURE_TIME && avgDistance < MIN_EXPOSURE_DISTANCE) {
-                    firstSeenTimeMap[deviceId]?.let {
-                        lastSeenTimeMap[deviceId]?.let { it1 ->
+                    firstSeenTimeMap[advertisingUUID]?.let {
+                        lastSeenTimeMap[advertisingUUID]?.let { it1 ->
 
-                            val device = DeviceEntity("deviceName", deviceId, System.currentTimeMillis(), System.currentTimeMillis())
+                            val device = DeviceEntity(deviceId, advertisingUUID, System.currentTimeMillis(), System.currentTimeMillis())
 
                             val deviceDao = RoomDb.getAppDatabase(this.baseContext!!)?.deviceDao()
                             val id = deviceDao?.insert(device)

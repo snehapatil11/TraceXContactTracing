@@ -10,6 +10,7 @@ import com.example.tracexcontacttracing.data.DeviceEntity
 @Database(entities = [DeviceEntity::class], version = 2)
 abstract class RoomDb : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao?
+    //abstract fun userDeviceDao(): UserDeviceDao?
 
     companion object {
         private var INSTANCE: RoomDb? = null
