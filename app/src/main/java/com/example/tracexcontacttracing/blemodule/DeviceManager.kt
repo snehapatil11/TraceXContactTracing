@@ -9,7 +9,7 @@ import android.util.Log
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.data.Enums
 import com.example.tracexcontacttracing.database.RoomDb
-//import com.example.tracexcontacttracing.data.UserDeviceEntity
+import com.example.tracexcontacttracing.data.UserDeviceEntity
 import java.util.*
 
 class DeviceManager(private val context: Context) {
@@ -280,10 +280,10 @@ class DeviceManager(private val context: Context) {
         val serviceDataByteArray = finalString.toByteArray()
 
         //store advertising UUID in room db
-        /*val device = UserDeviceEntity(randomUUID, System.currentTimeMillis(), System.currentTimeMillis())
+        val device = UserDeviceEntity(randomUUID, System.currentTimeMillis(), System.currentTimeMillis())
         val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
         val id = userDeviceDao?.insert(device)
-        println("saved device $device with id=$id")*/
+        println("saved device $device with id=$id")
 
         val data = AdvertiseData.Builder()
             .setIncludeDeviceName(false)
