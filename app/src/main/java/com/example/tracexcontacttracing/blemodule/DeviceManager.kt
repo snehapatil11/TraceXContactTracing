@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.ParcelUuid
 import android.util.Log
+import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.data.Enums
+import com.example.tracexcontacttracing.database.RoomDb
+import com.example.tracexcontacttracing.data.UserDeviceEntity
 import java.util.*
 
 class DeviceManager(private val context: Context) {
@@ -272,11 +275,21 @@ class DeviceManager(private val context: Context) {
             .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_ULTRA_LOW)
             .build()
 
+        val randomUUID = UUID.randomUUID().toString()
+        val finalString = randomUUID.substring(randomUUID.length - 4, randomUUID.length)
+        val serviceDataByteArray = finalString.toByteArray()
+
+        //store advertising UUID in room db
+        val device = UserDeviceEntity(finalString, System.currentTimeMillis(), System.currentTimeMillis())
+        val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
+        val id = userDeviceDao?.insert(device)
+        println("saved device $device with id=$id")
+
         val data = AdvertiseData.Builder()
-            .setIncludeDeviceName(true)
-            .setIncludeTxPowerLevel(false)
             .setIncludeDeviceName(false)
+            .setIncludeTxPowerLevel(false)
             .addServiceUuid(ParcelUuid(SERVICE_UUID))
+            .addManufacturerData(1023, serviceDataByteArray)
             .build()
 
         bluetoothLeAdvertiser.startAdvertising(settings, data, advertiseCallback)
