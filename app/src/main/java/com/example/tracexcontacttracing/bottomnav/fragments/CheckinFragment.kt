@@ -44,11 +44,14 @@ class CheckinFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_checkin, container, false)
 
-        view.saveButton.setOnClickListener {
+        /*view.saveButton.setOnClickListener {
             saveData()
-        }
+        }*/
         view.getButton.setOnClickListener {
             getData()
+        }
+        view.getDeviceDataButton.setOnClickListener {
+            getOwnDeviceData()
         }
 
         // Inflate the layout for this fragment
@@ -75,7 +78,7 @@ class CheckinFragment : Fragment() {
             }
     }
 
-    private fun saveData() {
+    /*private fun saveData() {
         val deviceTokenText = editViewDeviceToken.text.toString().trim()
         val deviceIdText = editViewDeviceId.text.toString().trim()
 
@@ -91,7 +94,7 @@ class CheckinFragment : Fragment() {
 
         val intent = Intent(activity, GetData::class.java);
         startActivity(intent);
-    }
+    }*/
     public fun getData(){
         // Read data
 //        RoomDb.getAppDatabase(this)?.clearAllTables()
@@ -108,5 +111,21 @@ class CheckinFragment : Fragment() {
         println(sb.toString())
 
         editViewDevicesData.setText(sb.toString())
+    }
+
+    public fun getOwnDeviceData(){
+        val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
+        val advertisingIdData = userDeviceDao?.getUserDeviceData()
+
+        //println("Start getting data")
+        //println(devices)
+        val sb = StringBuilder()
+        advertisingIdData?.forEach {
+            sb.append(it.toString())
+        }
+
+        println(sb.toString())
+
+        editViewOwnDeviceData.setText(sb.toString())
     }
 }

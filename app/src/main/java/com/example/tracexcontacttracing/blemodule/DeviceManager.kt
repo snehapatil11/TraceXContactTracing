@@ -280,7 +280,7 @@ class DeviceManager(private val context: Context) {
         val serviceDataByteArray = finalString.toByteArray()
 
         //store advertising UUID in room db
-        val device = UserDeviceEntity(randomUUID, System.currentTimeMillis(), System.currentTimeMillis())
+        val device = UserDeviceEntity(finalString, System.currentTimeMillis(), System.currentTimeMillis())
         val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
         val id = userDeviceDao?.insert(device)
         println("saved device $device with id=$id")
