@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".bottomnav.fragments.ContacttracingFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,6 +15,14 @@
             android:layout_height="wrap_content"
             android:text="Contact Tracing"
             android:layout_centerInParent="true"/>
+        <Button
+            android:id="@+id/scan_ble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable Bluetooth"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 </FrameLayout>
