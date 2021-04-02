@@ -1,11 +1,19 @@
 package com.example.tracexcontacttracing.bottomnav.fragments
 
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.blemodule.BLEService
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +29,7 @@ class ContacttracingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var inflatedView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +39,47 @@ class ContacttracingFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacttracing, container, false)
+        //return inflater.inflate(R.layout.fragment_contacttracing, container, false)
+        val isServiceRunning = BLEService.isAppInForeground
+        inflatedView = inflater.inflate(R.layout.fragment_contacttracing, container, false)
+
+        val serviceIntent = Intent(context, BLEService::class.java)
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android")
+
+        val button = inflatedView.findViewById(R.id.scan_ble) as Button
+        if (!isServiceRunning) {
+
+            button.setBackgroundColor(Color.GREEN)
+            button.setText("Start Service")
+
+            button.setOnClickListener {
+                Log.d(null, "Initiated background task")
+                Toast.makeText(context, "Contact Tracing Service Started", Toast.LENGTH_SHORT)
+                    .show()
+                //context?.startForegroundService(serviceIntent)
+
+                context?.startService(serviceIntent)
+
+                BLEService.isAppInForeground = true
+                //parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+            }
+        } else {
+            button.setBackgroundColor(Color.RED)
+            button.setText("Stop Service")
+            button.setOnClickListener {
+                context?.stopService(serviceIntent)
+                BLEService.isAppInForeground = false
+                //parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+            }
+
+        }
+        return inflatedView
     }
 
     companion object {

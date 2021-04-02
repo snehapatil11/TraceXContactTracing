@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
     private var mDeviceAddress: String = ""
 
+    private val REQUEST_LOCATION_PERMISSION = 2018
+    private val TAG = "MainActivity"
+    private val REQUEST_ENABLE_BT = 1000
+
     override fun onScanCompleted(deviceDataList: DeviceData) {
 
         //Initiate a dialog Fragment from here and ask the user to select his device
@@ -67,9 +71,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
     }
 
-    private val REQUEST_LOCATION_PERMISSION = 2018
-    private val TAG = "MainActivity"
-    private val REQUEST_ENABLE_BT = 1000
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -108,14 +110,15 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
     private fun checkLocationPermission() {
         if (isAboveMarshmallow()) {
             when {
-                isLocationPermissionEnabled() -> initBLEModule()
+                //isLocationPermissionEnabled() -> initBLEModule()
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) -> displayRationale()
                 else -> requestLocationPermission()
             }
-        } else {
-            initBLEModule()
         }
+        /*else {
+            initBLEModule()
+        }*/
     }
 
     /**
@@ -128,6 +131,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
             arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
             REQUEST_LOCATION_PERMISSION)
     }
+
 
     /**
      * If the user decline the Permission request and tick the never ask again message
@@ -204,7 +208,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
     private fun initBLEModule() {
         when (checkBluetooth()) {
-            Enums.ENABLED -> startService(Intent(this, BLEService::class.java))
+            //Enums.ENABLED -> startService(Intent(this, BLEService::class.java))
             Enums.DISABLED -> showBluetoothDisabledError()
             Enums.NOT_FOUND -> showBluetoothNotFoundError()
         }

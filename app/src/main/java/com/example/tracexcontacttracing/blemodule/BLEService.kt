@@ -3,6 +3,7 @@ package com.example.tracexcontacttracing.blemodule
 
 import android.Manifest
 import android.app.*
+import android.app.NotificationManager.IMPORTANCE_LOW
 import android.bluetooth.*
 import android.bluetooth.le.ScanResult
 import android.content.BroadcastReceiver
@@ -10,11 +11,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.example.tracexcontacttracing.MainActivity
 import com.example.tracexcontacttracing.Provider.BluetoothManagerProvider
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.Enums
@@ -27,6 +29,14 @@ import java.lang.Math.pow
 
 class BLEService: Service() {
 
+    private var serviceLooper: Looper? = null
+    private var serviceHandler: ServiceHandler? = null
+    //static
+    companion object {
+        @JvmField
+        var isAppInForeground: Boolean = false
+        const val BACKGROUND_CHANNEL_ID = "SILENT_CHANNEL_LOCATION"
+    }
     private val deviceManager by BluetoothManagerProvider()
     private val peripherals = mutableMapOf<BluetoothDevice, PeripheralData>()
     private var bluetoothState: Int = -1
@@ -57,34 +67,117 @@ class BLEService: Service() {
                     intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
 
                 when (bluetoothState) {
-                    BluetoothAdapter.STATE_OFF -> stopBleService()
+                    //BluetoothAdapter.STATE_OFF -> stopBleService()
                     BluetoothAdapter.STATE_ON -> startBleService()
                 }
             }
         }
     }
+    private inner class ServiceHandler(looper: Looper) : Handler(looper) {
+
+        override fun handleMessage(msg: Message) {
+            //background work here
+            try {
+                startBleService()
+
+            } catch (e: InterruptedException) {
+                // Restore interrupt status.
+                Thread.currentThread().interrupt()
+            }
+        }
+    }
+
     override fun onCreate() {
 
-        if (deviceManager != null) {
+        /*if (deviceManager != null) {
             bluetoothState =
                 if (deviceManager.checkBluetooth() == Enums.ENABLED) BluetoothAdapter.STATE_ON
                 else BluetoothAdapter.STATE_OFF
         }
-        registerReceiver(bluetoothReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
+        registerReceiver(bluetoothReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))*/
+
+        HandlerThread("ServiceStartArguments", Process.BLUETOOTH_UID).apply {
+            start()
+
+            // Get the HandlerThread's Looper and use it for our Handler
+            serviceLooper = looper
+            serviceHandler = ServiceHandler(looper)
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         //Log.i(TAG, "Start Command")
 
-        //startForeground()
+        startForeground()
 
-        startBleService()
+        //startBleService()
 
+        /*isAppInForeground = true
+        createNotificationChannel()
+        val pendingIntent: PendingIntent =
+            Intent(this, MainActivity::class.java).let { notificationIntent ->
+                PendingIntent.getActivity(this, 0, notificationIntent, 0)
+            }
+        var notification: Notification? = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             notification = NotificationCompat.Builder(this, "TraceXContactTracing")
+                .setContentTitle("Contact Tracing")
+                .setContentText("TraceX Contact Tracing application")
+                //.setSmallIcon(R.drawable.)
+                .setContentIntent(pendingIntent)
+                //.setTicker(getText(R.string.ticker_text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build()
+        }
+        startForeground(1, notification)*/
+
+        // For each start request, send a message to start a job and deliver the
+        // start ID so we know which request we're stopping when we finish the job
+        serviceHandler?.obtainMessage()?.also { msg ->
+            msg.arg1 = startId
+            serviceHandler?.sendMessage(msg)
+        }
+
+        // If we get killed, after returning from here, restart
         return START_STICKY
     }
 
     private fun startForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+            val channel =
+                NotificationChannel(
+                    BACKGROUND_CHANNEL_ID,
+                    getString(R.string.background_channel_name),
+                    IMPORTANCE_LOW
+                )
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        startForeground(1, getNotification())
+    }
+    private fun getNotification(): Notification? {
+        val intent = Intent(this, MainActivity::class.java)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val builder: NotificationCompat.Builder =
+            NotificationCompat.Builder(this, BACKGROUND_CHANNEL_ID)
+                .setContentIntent(pendingIntent)
+                .setContentText(getBluetoothState())
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setCategory(Notification.CATEGORY_SERVICE)
+        }
+        return builder.build()
     }
 
     /*private fun hasPermissions(): Boolean {
@@ -94,11 +187,27 @@ class BLEService: Service() {
         return notGrantedPermissions.isEmpty()
     }*/
     override fun onDestroy() {
-        unregisterReceiver(bluetoothReceiver)
+        //unregisterReceiver(bluetoothReceiver)
 
+        //stopBleService()
+        super.onDestroy()
         stopBleService()
+        Toast.makeText(this.baseContext, "Contact Tracing Service Ended", Toast.LENGTH_SHORT).show()
+        isAppInForeground = false
     }
-
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                "GBContactTracing",
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = getSystemService(
+                NotificationManager::class.java
+            )
+            manager.createNotificationChannel(serviceChannel)
+        }
+    }
     private fun startScanning() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
         val gpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
