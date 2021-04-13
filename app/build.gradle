@@ -23,6 +23,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+    google()
+    jcenter()
 }
 
 dependencies {
@@ -38,6 +52,12 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.2.6'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.android.material:material:<version>'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "io.karn:khttp-android:0.1.0"
+
+    testImplementation 'org.json:json:20201115'
 
     def room_version = "2.2.6"
 
