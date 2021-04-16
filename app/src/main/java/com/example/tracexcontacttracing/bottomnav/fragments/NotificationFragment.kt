@@ -6,55 +6,95 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.tracexcontacttracing.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tracexcontacttracing.Notification.NotificationRVAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [NotificationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NotificationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    var rv_notification_list: RecyclerView?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
+    val CHANNEL_ID = "TraceX_Channel_ID"
+    val notification_id = 101
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false)
+
+        val root: View = inflater!!.inflate(R.layout.fragment_notification, container, false)
+//        val btn: Button = view.findViewById(R.id.show_notification)
+//        btn.setOnClickListener(this)
+
+        rv_notification_list = root.findViewById(R.id.rv_notification_list)
+        rv_notification_list!!.layoutManager = LinearLayoutManager(context)
+        val arNotification = arrayListOf("This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on [INSERT DATE]. " +
+                "This person is home and we suggest you to take preventive measures as per DC Health guidelines.",
+            "Message 2", "Message 3", "Message 4", "Message 5", "Message 6", "Message 7","Message 8", "Message 9", "Message 10")
+        val adapter: NotificationRVAdapter =
+            NotificationRVAdapter(
+                arNotification,
+                context!!
+            )
+        rv_notification_list!!.adapter = adapter
+
+        return root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NotificationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NotificationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): NotificationFragment {
+            return NotificationFragment()
+        }
+
     }
+
+
+
+//    override fun onClick(v: View?) {
+//        show_notification.setOnClickListener{
+////            val intent = Intent(this, NotificationFragment::class.java).apply {
+////                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+////            }
+////            val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+//
+////            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+////                .setSmallIcon(R.drawable.ic_notification)
+////                .setContentTitle("This is the title")
+////                .setContentText("This is the notification")
+////                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//////                .setContentIntent(pendingIntent)
+////                .setAutoCancel(true)
+//
+////            with(NotificationManagerCompat.from(this)) {
+////                notify(0, builder.build())
+////            }
+//        }
+//
+////        createNotificationChannel()
+//        }
+
+//    private fun createNotificationChannel() {
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val name = getString(R.string.channel_name)
+//            val descriptionText = getString(R.string.channel_description)
+//            val importance = NotificationManager.IMPORTANCE_DEFAULT
+//            val channel = NotificationChannel("CHANNEL_ID", name, importance).apply {
+//                description = descriptionText
+//            }
+//            // Register the channel with the system
+//            val notificationManager: NotificationManager =
+//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//    }
+
 }
+
