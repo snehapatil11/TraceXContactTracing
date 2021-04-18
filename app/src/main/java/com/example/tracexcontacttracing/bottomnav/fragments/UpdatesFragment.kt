@@ -13,17 +13,11 @@ import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import kotlinx.android.synthetic.main.fragment_updates.*
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
+import org.joda.time.DateTime
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -73,11 +67,9 @@ class UpdatesFragment : Fragment() {
         val resultPair = covidDataService.getTotalCasesDeaths();
         val cases = resultPair.first;
         val deaths = resultPair.second;
-        val datetoday = LocalDateTime.now();
-        val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
-        val formatted = datetoday.format(formatter)
-
-        //print("cases "+cases)
+        val dateToday = DateTime.now();
+        val formatter = org.joda.time.format.DateTimeFormat.fullDate();
+        val formatted = formatter.print(dateToday);
         textViewCases.setText(cases.toString())
         textViewDeaths.setText(deaths.toString())
         textViewTodayDate.setText(formatted.toString())
