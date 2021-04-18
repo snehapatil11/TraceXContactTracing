@@ -23,6 +23,12 @@ import com.example.tracexcontacttracing.blemodule.*
 import com.example.tracexcontacttracing.data.Enums
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.example.tracexcontacttracing.Notification.NotificationWorker
 import com.example.tracexcontacttracing.blemodule.*
 import com.example.tracexcontacttracing.bottomnav.fragments.CheckinFragment
 import com.example.tracexcontacttracing.bottomnav.fragments.ContacttracingFragment
@@ -32,6 +38,8 @@ import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickListener {
@@ -83,8 +91,9 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
             true
         }
 
-
         checkLocationPermission()
+
+        callOneTimeWorkRequest()
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =
@@ -319,5 +328,38 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
             }
         }, 100)
     }*/
+
+
+    private fun callOneTimeWorkRequest(){
+
+        val currentDate = Calendar.getInstance()
+        val dueDate = Calendar.getInstance()
+        // Set Execution around 03:27:00 PM
+        dueDate.set(Calendar.HOUR_OF_DAY, 15)
+        dueDate.set(Calendar.MINUTE, 55)
+        dueDate.set(Calendar.SECOND, 0)
+        if (dueDate.before(currentDate)) {
+            dueDate.add(Calendar.HOUR_OF_DAY, 24)
+        }
+        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
+
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+            .setRequiresBatteryNotLow(true)
+            .setRequiresDeviceIdle(false)
+            .build()
+
+        val workManager = WorkManager.getInstance(applicationContext)
+
+        val dailyWorkRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+            .setConstraints(constraints)
+            .build()
+        workManager
+            // Work status: Blocked > Enqueued > Running > Succeeded
+            .enqueue(dailyWorkRequest)
+
+    }
 
 }

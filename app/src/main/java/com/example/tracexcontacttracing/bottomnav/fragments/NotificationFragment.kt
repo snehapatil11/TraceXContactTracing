@@ -37,7 +37,11 @@ class NotificationFragment : Fragment() {
         rv_notification_list!!.layoutManager = LinearLayoutManager(context)
         val arNotification = arrayListOf("This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on [INSERT DATE]. " +
                 "This person is home and we suggest you to take preventive measures as per DC Health guidelines.",
-            "Message 2", "Message 3", "Message 4", "Message 5", "Message 6", "Message 7","Message 8", "Message 9", "Message 10")
+            "Message 2", "Message 3", "Message 4", "Message 5", "Message 6", "Message 7",
+            "This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on [INSERT DATE]. " +
+                    "This person is home and we suggest you to take preventive measures as per DC Health guidelines.",
+            "Message 8", "Message 9", "Message 10", "This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on [INSERT DATE]." +
+                    "This person is home and we suggest you to take preventive measures as per DC Health guidelines.")
         val adapter: NotificationRVAdapter =
             NotificationRVAdapter(
                 arNotification,
