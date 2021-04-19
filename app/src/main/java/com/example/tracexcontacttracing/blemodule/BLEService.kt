@@ -51,12 +51,6 @@ class BLEService: Service() {
     private val distanceMap = mutableMapOf<String, List<Double>>()
     private val MIN_EXPOSURE_TIME = 120000 //in milliseconds
     private val MIN_EXPOSURE_DISTANCE = 6 //in feet
-    //difference between current time and last seen time for the device to be not in the periphery
-    private val DISAPPEAR_TIME = 20000 //in milliseconds
-
-    // if the difference between end time of the data and current time is less than this time then delete that record from the database
-    private val MAX_TIME_DIFF: Long = 120000
-
 
 
     private val bluetoothReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -112,25 +106,6 @@ class BLEService: Service() {
         startForeground()
 
         //startBleService()
-
-        /*isAppInForeground = true
-        createNotificationChannel()
-        val pendingIntent: PendingIntent =
-            Intent(this, MainActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-        var notification: Notification? = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-             notification = NotificationCompat.Builder(this, "TraceXContactTracing")
-                .setContentTitle("Contact Tracing")
-                .setContentText("TraceX Contact Tracing application")
-                //.setSmallIcon(R.drawable.)
-                .setContentIntent(pendingIntent)
-                //.setTicker(getText(R.string.ticker_text))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .build()
-        }
-        startForeground(1, notification)*/
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
@@ -226,17 +201,6 @@ class BLEService: Service() {
     }
 
     private fun onBleDeviceFound(result: ScanResult) {
-        /*peripherals[result.device]?.let { peripheralData ->
-            if (System.currentTimeMillis() - peripheralData.date.time > 100000) {
-                /*Log.v(
-                    SCAN_TAG,
-                    "Not connecting to ${result.device.address} yet"
-                )*/
-                println(result.device.address)
-                return
-            }
-        }*/
-
         val deviceName = result.device.name
         val deviceId = result.device.address
 
