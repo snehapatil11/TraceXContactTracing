@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
     compileSdkVersion 29
@@ -46,6 +47,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.room:room-runtime:2.2.6'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -72,5 +74,14 @@ dependencies {
 
     // Kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+
+    // Declare the dependencies for any other desired Firebase products
+    // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
+//    implementation 'com.google.firebase:firebase-auth-ktx'
+//    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
 
 }
