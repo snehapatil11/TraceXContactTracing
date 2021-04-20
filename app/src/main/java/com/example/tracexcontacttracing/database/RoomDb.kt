@@ -9,7 +9,7 @@ import com.example.tracexcontacttracing.dao.UserDeviceDao
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.data.UserDeviceEntity
 
-@Database(entities = [DeviceEntity::class, UserDeviceEntity::class], version = 2)
+@Database(entities = [DeviceEntity::class, UserDeviceEntity::class], version = 3)
 abstract class RoomDb : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao?
     abstract fun userDeviceDao(): UserDeviceDao?

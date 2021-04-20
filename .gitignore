@@ -84,3 +84,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# VS Code
+.DS_Store

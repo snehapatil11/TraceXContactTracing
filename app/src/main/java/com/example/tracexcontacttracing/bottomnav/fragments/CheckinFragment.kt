@@ -2,18 +2,25 @@ package com.example.tracexcontacttracing.bottomnav.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.tracexcontacttracing.GetData
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_get_data.*
 import kotlinx.android.synthetic.main.fragment_checkin.*
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
 import java.lang.StringBuilder
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +33,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CheckinFragment : Fragment() {
+    private val TAG = "CheckinFragment"
+    private lateinit var database: DatabaseReference
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -52,6 +62,10 @@ class CheckinFragment : Fragment() {
         }
         view.getDeviceDataButton.setOnClickListener {
             getOwnDeviceData()
+        }
+
+        view.uploadData.setOnClickListener {
+            uploadData()
         }
 
         // Inflate the layout for this fragment
@@ -95,9 +109,9 @@ class CheckinFragment : Fragment() {
         val intent = Intent(activity, GetData::class.java);
         startActivity(intent);
     }*/
-    public fun getData(){
+    fun getData() {
         // Read data
-//        RoomDb.getAppDatabase(this)?.clearAllTables()
+//        RoomDb.getAppDatabase(this.context!!)?.clearAllTables()
         val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
         val devices = deviceDao?.getDeviceData()
 
@@ -113,7 +127,8 @@ class CheckinFragment : Fragment() {
         editViewDevicesData.setText(sb.toString())
     }
 
-    public fun getOwnDeviceData(){
+    fun getOwnDeviceData() {
+//        RoomDb.getAppDatabase(this.context!!)?.clearAllTables()
         val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
         val advertisingIdData = userDeviceDao?.getUserDeviceData()
 
@@ -128,4 +143,39 @@ class CheckinFragment : Fragment() {
 
         editViewOwnDeviceData.setText(sb.toString())
     }
+
+    private fun uploadData() {
+        database = Firebase.database.reference
+
+        simulateDeviceUpload() // testing, comment out if not needed
+
+        uploadExposedDevices() // actual upload
+    }
+
+    private fun uploadDevice(device: DeviceEntity) {
+        database.child("exposed_devices").child(device.deviceId).setValue(device)
+
+        Toast.makeText(context, "Device ${device.deviceId} Data Uploaded", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun simulateDeviceUpload() {
+        val device = generateRandomDevice()
+        uploadDevice(device)
+    }
+
+    private fun generateRandomDevice(): DeviceEntity {
+        val deviceId = UUID.randomUUID().toString().substring(0, 7)
+        return DeviceEntity("token1", deviceId, System.currentTimeMillis(), System.currentTimeMillis())
+    }
+
+    private fun uploadExposedDevices() {
+        val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
+        val devices = deviceDao?.getDeviceData()
+
+        devices?.forEach {
+            uploadDevice(it)
+            Log.d(TAG, "uploaded $it")
+        }
+    }
+
 }
