@@ -5,8 +5,6 @@ import android.bluetooth.le.*
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.ParcelUuid
-import android.util.Log
-import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.data.Enums
 import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.data.UserDeviceEntity
@@ -30,12 +28,7 @@ class DeviceManager(private val context: Context) {
 
     private var deviceStatusListener: DeviceStatusListener? = null
 
-    /**
-     * Check is Bluetooth LE is available and is it turned on
-     *
-     * @return current state of Bluetooth scanner
-     * @see Enums
-     */
+
     fun checkBluetooth(): Enums {
         val hasSupportLe = context.packageManager
             ?.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
@@ -50,13 +43,6 @@ class DeviceManager(private val context: Context) {
         }
     }
 
-    /**
-     * Start searching Bluetooth LE devices according to the selected device type
-     * and return one by one found devices via devicesCallback
-     *
-     * @param devicesCallback a callback for found devices
-     *
-     */
     fun startSearchDevices(devicesCallback: (ScanResult) -> Unit) {
         if (scanActive) {
             return
@@ -114,7 +100,6 @@ class DeviceManager(private val context: Context) {
                 override fun onMtuChanged(gatt: BluetoothGatt?, mtu: Int, status: Int) {
                     super.onMtuChanged(gatt, mtu, status)
 
-                    //Log.d(SCAN_TAG, "Mtu Changed $mtu status $status")
                 }
 
                 override fun onConnectionStateChange(
@@ -124,26 +109,20 @@ class DeviceManager(private val context: Context) {
                 ) {
                     when (newState) {
                         BluetoothProfile.STATE_CONNECTED -> {
-                            //insertLogs(SCAN_TAG, "Device connected: ${device.address}")
 
                             gatt.discoverServices()
                         }
                         BluetoothProfile.STATE_DISCONNECTED -> {
-                            /*insertLogs(
-                                SCAN_TAG,
-                                "Device disconnected: ${device.address} status $status"
-                            )*/
+
                         }
                     }
                     when (status) {
                         BluetoothGatt.GATT_FAILURE -> {
-                            //insertLogs(SCAN_TAG, "Failed to connect to ${device.address}")
                         }
                     }
                 }
 
                 override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
-                    //Log.d(SCAN_TAG, "Services discovered for ${device.address}")
 
                     var hasServiceAndCharacteristic = false
                     val service = gatt.getService(SERVICE_UUID)
@@ -155,13 +134,7 @@ class DeviceManager(private val context: Context) {
 
                             gatt.writeCharacteristic(it)
 
-                            /*insertLogs(
-                                SCAN_TAG,
-                                "Sent RPI to ${device.address}"
-                            )
 
-                            context.logEvent("sent_rpi_scan")
-*/
                             hasServiceAndCharacteristic = true
                         }
                     }
@@ -176,10 +149,6 @@ class DeviceManager(private val context: Context) {
                     characteristic: BluetoothGattCharacteristic,
                     status: Int
                 ) {
-                    /*Log.d(
-                        SCAN_TAG,
-                        "Characteristic read for ${scanResult.device.address} status $status"
-                    )*/
 
                     if (status == BluetoothGatt.GATT_SUCCESS) {
                         handleCharacteristicRead(scanResult, characteristic)
@@ -193,10 +162,6 @@ class DeviceManager(private val context: Context) {
                     characteristic: BluetoothGattCharacteristic,
                     status: Int
                 ) {
-                    /*Log.d(
-                        SCAN_TAG,
-                        "Characteristic write for ${scanResult.device.address} status $status"
-                    )*/
 
                     if (status == BluetoothGatt.GATT_SUCCESS) {
                         gatt.readCharacteristic(characteristic)
@@ -212,11 +177,6 @@ class DeviceManager(private val context: Context) {
     ) {
         val data = characteristic.value
 
-        /*if (data.size != CryptoUtil.KEY_LENGTH * 2) {
-            //insertLogs(SCAN_TAG, "Received unexpected data length: ${data.size}")
-
-            return
-        }*/
 
         //val rollingId = data.sliceArray(0 until CryptoUtil.KEY_LENGTH).base64EncodedString()
         //val meta = data.sliceArray(CryptoUtil.KEY_LENGTH until CryptoUtil.KEY_LENGTH * 2).base64EncodedString()
@@ -225,12 +185,7 @@ class DeviceManager(private val context: Context) {
         //val day = CryptoUtil.currentDayNumber()
         //BtContactsManager.addContact(rollingId, day, BtEncounter(scanResult.rssi, meta))
 
-        /*insertLogs(
-            SCAN_TAG,
-            "Received RPI from ${scanResult.device.address} RSSI ${scanResult.rssi}"
-        )*/
 
-        //context.logEvent("received_rpi_scan")
     }
 
     interface DeviceStatusListener {
@@ -239,13 +194,7 @@ class DeviceManager(private val context: Context) {
     }
 
 
-    /********************************************
-     ******************SERVICE*******************
-     ********************************************/
 
-    /**
-     * Begin advertising over Bluetooth that this device is connectable
-     */
     fun startAdvertising(): Boolean {
         if (advertisingActive)
             return true
@@ -298,9 +247,6 @@ class DeviceManager(private val context: Context) {
         return true
     }
 
-    /**
-     * Stop Bluetooth advertisements.
-     */
     fun stopAdvertising() {
         val bluetoothLeAdvertiser: BluetoothLeAdvertiser? =
             bluetoothManager.adapter.bluetoothLeAdvertiser
@@ -308,9 +254,6 @@ class DeviceManager(private val context: Context) {
         advertisingActive = false
     }
 
-    /**
-     * Callback to receive information about the advertisement process.
-     */
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
             //insertLogs(ADV_TAG, "Advertising has started")
@@ -325,9 +268,6 @@ class DeviceManager(private val context: Context) {
         }
     }
 
-    /**
-     * Initialize the GATT server instance with the services/characteristics
-     */
     private fun startBleServer(): Boolean {
         bluetoothGattServer = bluetoothManager.openGattServer(context, gattServerCallback)
 
@@ -348,10 +288,6 @@ class DeviceManager(private val context: Context) {
         return service
     }
 
-    /**
-     * Callback to handle incoming requests to the GATT server.
-     * All read/write requests for characteristics and descriptors are handled here.
-     */
     private val gattServerCallback = object : BluetoothGattServerCallback() {
 
         override fun onConnectionStateChange(device: BluetoothDevice, status: Int, newState: Int) {
@@ -377,19 +313,9 @@ class DeviceManager(private val context: Context) {
                         ByteArray(100)
                     )
 
-                    /*insertLogs(
-                        ADV_TAG,
-                        "Sent RPI to ${device.address}"
-                    )*/
-
                     //context.logEvent("sent_rpi_adv")
                 }
                 else -> {
-                    // Invalid characteristic
-                    /*insertLogs(
-                        ADV_TAG,
-                        "Invalid Characteristic Read ${characteristic.uuid}"
-                    )*/
                     bluetoothGattServer?.sendResponse(
                         device,
                         requestId,
@@ -414,36 +340,7 @@ class DeviceManager(private val context: Context) {
                 MAIN_CHARACTERISTIC_UUID -> {
                     value?.let { data ->
                         print(data)
-                        /*if (data.size != CryptoUtil.KEY_LENGTH * 2) {
-                            *//*insertLogs(
-                                ADV_TAG,
-                                "Received unexpected data length: ${data.size}"
-                            )*//*
 
-                            bluetoothGattServer?.sendResponse(
-                                device,
-                                requestId,
-                                BluetoothGatt.GATT_FAILURE,
-                                0,
-                                null
-                            )
-
-                            return
-                        }*/
-
-                        //val rollingId =data.sliceArray(0 until CryptoUtil.KEY_LENGTH).base64EncodedString()
-                        //val meta =data.sliceArray(CryptoUtil.KEY_LENGTH until CryptoUtil.KEY_LENGTH * 2).base64EncodedString()
-
-                        //val day = CryptoUtil.currentDayNumber()
-                        // TODO get rssi somehow
-                        //BtContactsManager.addContact(rollingId, day, BtEncounter(0, meta))
-
-                        /*insertLogs(
-                            ADV_TAG,
-                            "Received RPI from ${device.address}"
-                        )*/
-
-                        //context.logEvent("received_rpi_adv")
 
                         bluetoothGattServer?.sendResponse(
                             device,
@@ -453,10 +350,6 @@ class DeviceManager(private val context: Context) {
                             null
                         )
                     } ?: run {
-                        /*insertLogs(
-                            ADV_TAG,
-                            "Invalid Characteristic Write ${characteristic.uuid}"
-                        )*/
 
                         bluetoothGattServer?.sendResponse(
                             device,
@@ -468,11 +361,6 @@ class DeviceManager(private val context: Context) {
                     }
                 }
                 else -> {
-                    // Invalid characteristic
-                    /*insertLogs(
-                        ADV_TAG,
-                        "Invalid Characteristic Write ${characteristic.uuid}"
-                    )*/
                     bluetoothGattServer?.sendResponse(
                         device,
                         requestId,
@@ -486,7 +374,6 @@ class DeviceManager(private val context: Context) {
     }
 
     fun stopServer() {
-        //insertLogs(ADV_TAG, "Stop gatt server")
 
         bluetoothGattServer?.close()
     }
