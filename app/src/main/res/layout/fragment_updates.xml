@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:elevation="10dp"
     android:visibility="visible"
     tools:context=".bottomnav.fragments.UpdatesFragment">
 
@@ -19,7 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/updateScrollView"
@@ -34,20 +35,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/LineChartCard"
+                        android:layout_width="358dp"
+                        android:layout_height="250dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="505dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="#FFFFFF"
+                        android:elevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/lineChart"
+                            android:layout_width="334dp"
+                            android:layout_height="217dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/VaccineCardView"
                         android:layout_width="358dp"
                         android:layout_height="180dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="256dp"
+                        android:layout_marginTop="312dp"
                         android:layout_marginEnd="20dp"
                         android:background="#FFFFFF"
                         android:elevation="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.538"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -133,13 +159,13 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ChartCardView"
-                        android:layout_width="362dp"
-                        android:layout_height="283dp"
+                        android:layout_width="358dp"
+                        android:layout_height="250dp"
                         android:layout_marginStart="27dp"
-                        android:layout_marginTop="452dp"
+                        android:layout_marginTop="760dp"
                         android:layout_marginEnd="27dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.444"
+                        app:layout_constraintHorizontal_bias="0.433"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -159,12 +185,11 @@
                         android:layout_width="358dp"
                         android:layout_height="85dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="156dp"
+                        android:layout_marginTop="216dp"
                         android:layout_marginEnd="20dp"
                         android:background="#FFFFFF"
                         android:elevation="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.461"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -203,8 +228,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/CasesCardView"
-                        android:layout_width="358dp"
-                        android:layout_height="108dp"
+                        android:layout_width="361dp"
+                        android:layout_height="172dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="20dp"
@@ -213,6 +238,52 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/newDeathsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="232dp"
+                            android:layout_marginTop="132dp"
+                            android:text="New Deaths"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/newCasesText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="108dp"
+                            android:layout_marginTop="132dp"
+                            android:text="New Cases"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/newDeaths"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="256dp"
+                            android:layout_marginTop="108dp"
+                            android:text="23"
+                            android:textColor="#F44336"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/newCases"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="124dp"
+                            android:layout_marginTop="108dp"
+                            android:text="200"
+                            android:textColor="#FF9800"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/imageView2"
@@ -267,20 +338,19 @@
                             android:id="@+id/casesText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="124dp"
-                            android:text="Cases"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="108dp"
+                            android:layout_marginTop="72dp"
+                            android:text="Total Cases"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.82" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/deathsText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="256dp"
+                            android:layout_marginStart="240dp"
                             android:layout_marginTop="72dp"
-                            android:text="Deaths"
+                            android:text="Total Deaths"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

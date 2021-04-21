@@ -17,6 +17,9 @@ interface TimeSeriesCovidDataDao {
     @Query("SELECT max(modified_at) FROM timeseries_covid_data")
     fun getLastUpdatedTsForData(): Long
 
+    //@Query("SELECT  FROM timeseries_covid_data")
+    //fun getMonthlyData(): (String, Long)
+
     @Query("DELETE FROM timeseries_covid_data")
     fun deleteAll()
 
