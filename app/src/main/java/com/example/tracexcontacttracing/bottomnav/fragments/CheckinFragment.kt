@@ -90,7 +90,7 @@ class CheckinFragment : Fragment() {
         builder.setMessage("Confirm to share exposed devices data that you have been in close contact with?")
         builder.setTitle("TraceX")
 
-        builder.setPositiveButton("Yes") { dialog, which ->
+        builder.setPositiveButton("I consent") { dialog, which ->
             dialog.dismiss()
             Log.d(TAG, "Yes on consent. Uploading data...")
             uploadData()
