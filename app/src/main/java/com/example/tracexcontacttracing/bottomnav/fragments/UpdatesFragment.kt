@@ -3,6 +3,7 @@ package com.example.tracexcontacttracing.bottomnav.fragments
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,16 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import org.joda.time.DateTime
-import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,9 +36,10 @@ class UpdatesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var barChart: BarChart? = null
+    private var lineChart: LineChart? = null
     private var param2: String? = null
     private var covidDataService:CovidDataService = CovidDataService();
-
+    val TAG = "UpdateFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,21 +62,44 @@ class UpdatesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_updates, container, false);
         barChart =  view.findViewById<BarChart>(R.id.barChart);
+        lineChart = view.findViewById<LineChart>(R.id.lineChart)
         val textViewCases = view.findViewById<TextView>(R.id.cases);
         val textViewDeaths = view.findViewById<TextView>(R.id.deaths);
+        val textViewNewCases = view.findViewById<TextView>(R.id.newCases);
+        val textViewNewDeaths = view.findViewById<TextView>(R.id.newDeaths);
         val textViewTodayDate = view.findViewById<TextView>(R.id.datetoday);
+        val textViewVaccineInitiated = view.findViewById<TextView>(R.id.vaccine1);
+        val textViewVaccineCompleted = view.findViewById<TextView>(R.id.vaccine2);
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
-        val resultPair = covidDataService.getTotalCasesDeaths();
-        val cases = resultPair.first;
-        val deaths = resultPair.second;
-        val dateToday = DateTime.now();
-        val formatter = org.joda.time.format.DateTimeFormat.fullDate();
-        val formatted = formatter.print(dateToday);
+        val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
+        val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.TimeSeriesCovidDataDao()
+        //TODO add logic to call store
+
+        covidDataService.fetchAndStoreStateCovidData(stateCovidDataDao)
+        covidDataService.fetchAndStoreTimeSeriesCovidData((timeSeriesCovidDataDao))
+
+        val cases = stateCovidDataDao?.getTotalCases()
+        val deaths = stateCovidDataDao?.getTotalDeaths()
+        val newCases = stateCovidDataDao?.getTotalNewCases()
+        val newDeaths = stateCovidDataDao?.getTotalNewDeaths()
+        val vaccineInitiated = stateCovidDataDao?.getTotalVaccinationInitiated();
+        val vaccineCompleted = stateCovidDataDao?.getTotalVaccinationCompleted();
+
+        Log.i(TAG, "Total Cases: ${cases}, Total Deaths: ${deaths}")
+
+        val dateToday = DateTime.now()
+        val formatter = org.joda.time.format.DateTimeFormat.fullDate()
+        val formatted = formatter.print(dateToday)
         textViewCases.setText(cases.toString())
         textViewDeaths.setText(deaths.toString())
+        textViewNewCases.setText(newCases.toString())
+        textViewNewDeaths.setText(newDeaths.toString())
         textViewTodayDate.setText(formatted.toString())
+        textViewVaccineInitiated.setText(vaccineInitiated.toString())
+        textViewVaccineCompleted.setText(vaccineCompleted.toString())
         setBarChart()
+        setLineChart()
         return view;
     }
 
@@ -102,22 +128,24 @@ class UpdatesFragment : Fragment() {
         print("in bar chart")
 
         val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(0f, 5f))
+        entries.add(BarEntry(1f, 0.5f))
         entries.add(BarEntry(1f, 1f))
         entries.add(BarEntry(2f, 2f))
-        entries.add(BarEntry(3f, 3f))
-        entries.add(BarEntry(4f, 4f))
-        entries.add(BarEntry(5f, 5f))
+        entries.add(BarEntry(3f, 2f))
+        entries.add(BarEntry(4f, 1.5f))
+        entries.add(BarEntry(5f, 1f))
+        entries.add(BarEntry(6f, 1f))
 
         val barDataSet = BarDataSet(entries, "Cells")
 
         val labels = ArrayList<String>()
-        labels.add("18-Jan")
-        labels.add("19-Jan")
-        labels.add("20-Jan")
-        labels.add("21-Jan")
-        labels.add("22-Jan")
-        labels.add("23-Jan")
+        labels.add("15-April")
+        labels.add("16-April")
+        labels.add("17-April")
+        labels.add("18-April")
+        labels.add("19-April")
+        labels.add("20-April")
+        labels.add("21-April")
         val data = BarData(barDataSet)
         barChart?.data = data // set the data and list of lables into chart
 
@@ -150,5 +178,58 @@ class UpdatesFragment : Fragment() {
         barChart?.invalidate();
     }
 
+    private fun setLineChart() {
+
+        print("in line chart")
+
+
+        val lineEntries = ArrayList<Entry>()
+        for (i in 0 until 12) {
+            //val x:Float = (System.currentTimeMillis()/1000000).toFloat()-(i * 100)
+            val x:Float = (i).toFloat()
+            val y:Float = (i*0.9).toFloat();
+            Log.i(TAG, "(${x}, ${y})")
+            if(x>0) {
+                lineEntries.add(Entry(x,y))
+            }
+        }
+
+        val dataSet =  LineDataSet(lineEntries, "Time series");
+        val lineData = LineData(dataSet);
+        lineChart?.setData(lineData);
+
+
+        val labels = ArrayList<String>()
+        labels.add("15-April")
+        labels.add("16-May")
+        labels.add("17-June")
+        labels.add("18-July")
+        labels.add("19-Aug")
+        labels.add("20-Sept")
+        labels.add("21-Oct")
+        labels.add("22-Nov")
+        labels.add("23-Dec")
+        labels.add("24-Jan")
+        labels.add("25-Feb")
+        labels.add("25-March")
+
+        lineChart?.setTouchEnabled(true)
+        lineChart?.description?.isEnabled = false
+        //barChart?.xAxis?.axisMinimum = 0f
+
+        // barChart?.groupBars(0f, groupSpace, barSpace)
+        val xAxis = lineChart?.xAxis
+        xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
+            /*
+            object : ValueFormatter() {
+            override fun getFormattedValue(value: Float, axis: AxisBase): String {
+                return
+            }
+        }
+             */
+
+        lineChart?.animateY(500)
+        lineChart?.invalidate();
+    }
 
 }
