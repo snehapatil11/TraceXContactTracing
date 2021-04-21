@@ -3,6 +3,7 @@ package com.example.tracexcontacttracing.bottomnav.fragments
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
@@ -36,7 +38,7 @@ class UpdatesFragment : Fragment() {
     private var barChart: BarChart? = null
     private var param2: String? = null
     private var covidDataService:CovidDataService = CovidDataService();
-
+    val TAG = "UpdateFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,17 +64,29 @@ class UpdatesFragment : Fragment() {
         val textViewCases = view.findViewById<TextView>(R.id.cases);
         val textViewDeaths = view.findViewById<TextView>(R.id.deaths);
         val textViewTodayDate = view.findViewById<TextView>(R.id.datetoday);
+        val textViewVaccineInitiated = view.findViewById<TextView>(R.id.vaccine1);
+        val textViewVaccineCompleted = view.findViewById<TextView>(R.id.vaccine2);
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
-        val resultPair = covidDataService.getTotalCasesDeaths();
-        val cases = resultPair.first;
-        val deaths = resultPair.second;
-        val dateToday = DateTime.now();
-        val formatter = org.joda.time.format.DateTimeFormat.fullDate();
-        val formatted = formatter.print(dateToday);
+        val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
+        //TODO add logic to call store
+
+        covidDataService.fetchAndStoreStateCovidData(stateCovidDataDao)
+        val cases = stateCovidDataDao?.getTotalCases()
+        val deaths = stateCovidDataDao?.getTotalDeaths()
+        val vaccineInitiated = stateCovidDataDao?.getTotalVaccinationInitiated();
+        val vaccineCompleted = stateCovidDataDao?.getTotalVaccinationCompleted();
+
+        Log.i(TAG, "Total Cases: ${cases}, Total Deaths: ${deaths}")
+
+        val dateToday = DateTime.now()
+        val formatter = org.joda.time.format.DateTimeFormat.fullDate()
+        val formatted = formatter.print(dateToday)
         textViewCases.setText(cases.toString())
         textViewDeaths.setText(deaths.toString())
         textViewTodayDate.setText(formatted.toString())
+        textViewVaccineInitiated.setText(vaccineInitiated.toString())
+        textViewVaccineCompleted.setText(vaccineCompleted.toString())
         setBarChart()
         return view;
     }
