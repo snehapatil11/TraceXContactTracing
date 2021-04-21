@@ -101,5 +101,13 @@
     <string name="channel_name">Channel Name for the push notification service</string>
     <string name="channel_description">Channel Description: Channel is created to get the push notification for the exposure.</string>
     <string name="notifications_title">Notifications</string>
+    <string name="check_in">Check In</string>
+    <string name="sore_throat">Sore throat</string>
+    <string name="new_loss_of_taste_or_smell">New loss of taste or smell</string>
+    <string name="do_you_experience_any_symptom_today">Do you experience any symptom today?</string>
+    <string name="upload_data">Upload Data</string>
+    <string name="fever_or_chills">Fever or chills</string>
+    <string name="cough">Cough</string>
+    <string name="checkin_history">CheckIn History</string>
 
 </resources>
