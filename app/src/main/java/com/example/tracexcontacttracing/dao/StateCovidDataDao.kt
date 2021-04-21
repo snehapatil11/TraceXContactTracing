@@ -12,10 +12,10 @@ interface StateCovidDataDao {
     fun getTotalCases(): Int?
 
     @Query("SELECT sum(deaths) FROM state_covid_data")
-    fun getTotalCase(): Int?
+    fun getTotalDeaths(): Int?
 
     @Query("SELECT sum(newCases) FROM state_covid_data")
-    fun getTotalDeaths(): Int?
+    fun getTotalNewCases(): Int?
 
     @Query("SELECT sum(newDeaths) FROM state_covid_data")
     fun getTotalNewDeaths(): Int?
@@ -29,6 +29,9 @@ interface StateCovidDataDao {
     @Query("SELECT max(modified_at) FROM state_covid_data")
     fun getLastUpdatedTsForData(): Long
 
+    @Query("DELETE FROM state_covid_data")
+    fun deleteAll()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(device: StateCovidDataEntity): Long
 
@@ -37,4 +40,5 @@ interface StateCovidDataDao {
 
     @Update
     fun update(device: StateCovidDataEntity)
+
 }

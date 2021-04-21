@@ -69,9 +69,12 @@ class UpdatesFragment : Fragment() {
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
         val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
+        val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.TimeSeriesCovidDataDao()
         //TODO add logic to call store
 
         covidDataService.fetchAndStoreStateCovidData(stateCovidDataDao)
+        covidDataService.fetchAndStoreTimeSeriesCovidData((timeSeriesCovidDataDao))
+
         val cases = stateCovidDataDao?.getTotalCases()
         val deaths = stateCovidDataDao?.getTotalDeaths()
         val vaccineInitiated = stateCovidDataDao?.getTotalVaccinationInitiated();

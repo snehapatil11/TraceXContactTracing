@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "state_covid_data")
-data class StateCovidDataEntity(
+data class StateCovidDataEntity (
     @PrimaryKey @ColumnInfo(name = "state") val state: String,
     @ColumnInfo(name = "cases") val cases: Int,
     @ColumnInfo(name = "deaths") val deaths: Int,
