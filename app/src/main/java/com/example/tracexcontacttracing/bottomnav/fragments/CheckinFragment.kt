@@ -1,26 +1,25 @@
 package com.example.tracexcontacttracing.bottomnav.fragments
 
-import android.content.Intent
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.Toast
-import com.example.tracexcontacttracing.GetData
+import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.data.CheckinRecordEntity
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
+import com.example.tracexcontacttracing.fragment.CheckinDetailFragment
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_get_data.*
-import kotlinx.android.synthetic.main.fragment_checkin.*
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
-import java.lang.StringBuilder
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,18 +53,12 @@ class CheckinFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_checkin, container, false)
 
-        /*view.saveButton.setOnClickListener {
-            saveData()
-        }*/
-        view.getButton.setOnClickListener {
-            getData()
-        }
-        view.getDeviceDataButton.setOnClickListener {
-            getOwnDeviceData()
+        view.checkIn.setOnClickListener {
+            checkIn()
         }
 
         view.uploadData.setOnClickListener {
-            uploadData()
+            getConsent()
         }
 
         // Inflate the layout for this fragment
@@ -92,56 +85,25 @@ class CheckinFragment : Fragment() {
             }
     }
 
-    /*private fun saveData() {
-        val deviceTokenText = editViewDeviceToken.text.toString().trim()
-        val deviceIdText = editViewDeviceId.text.toString().trim()
+    private fun getConsent() {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Confirm to share exposed devices data that you have been in close contact with?")
+        builder.setTitle("TraceX")
 
-        // TODO check input
-        val device = DeviceEntity(deviceTokenText, deviceIdText, System.currentTimeMillis(), System.currentTimeMillis())
-
-        val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
-        val id = deviceDao?.insert(device)
-
-        println("saved device $device with id=$id")
-
-//        Toast.makeText(this, "Data Saved", Toast.LENGTH_SHORT).show()
-
-        val intent = Intent(activity, GetData::class.java);
-        startActivity(intent);
-    }*/
-    fun getData() {
-        // Read data
-//        RoomDb.getAppDatabase(this.context!!)?.clearAllTables()
-        val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
-        val devices = deviceDao?.getDeviceData()
-
-        //println("Start getting data")
-        //println(devices)
-        val sb = StringBuilder()
-        devices?.forEach {
-            sb.append(it.toString())
+        builder.setPositiveButton("Yes") { dialog, which ->
+            dialog.dismiss()
+            Log.d(TAG, "Yes on consent. Uploading data...")
+            uploadData()
+        }
+        builder.setNegativeButton(
+            "No"
+        ) { dialog, which ->
+            dialog.dismiss()
+            Log.d(TAG, "Clicked No")
         }
 
-        println(sb.toString())
-
-        editViewDevicesData.setText(sb.toString())
-    }
-
-    fun getOwnDeviceData() {
-//        RoomDb.getAppDatabase(this.context!!)?.clearAllTables()
-        val userDeviceDao = RoomDb.getAppDatabase(this.context!!)?.userDeviceDao()
-        val advertisingIdData = userDeviceDao?.getUserDeviceData()
-
-        //println("Start getting data")
-        //println(devices)
-        val sb = StringBuilder()
-        advertisingIdData?.forEach {
-            sb.append(it.toString())
-        }
-
-        println(sb.toString())
-
-        editViewOwnDeviceData.setText(sb.toString())
+        val d = builder.create()
+        d.show()
     }
 
     private fun uploadData() {
@@ -165,17 +127,75 @@ class CheckinFragment : Fragment() {
 
     private fun generateRandomDevice(): DeviceEntity {
         val deviceId = UUID.randomUUID().toString().substring(0, 7)
-        return DeviceEntity("token1", deviceId, System.currentTimeMillis(), System.currentTimeMillis())
+        return DeviceEntity(
+            "token1",
+            deviceId,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
     }
 
     private fun uploadExposedDevices() {
-        val deviceDao = RoomDb.getAppDatabase(this.context!!)?.deviceDao()
+        val deviceDao = RoomDb.getAppDatabase(this.requireContext())?.deviceDao()
         val devices = deviceDao?.getDeviceData()
 
         devices?.forEach {
             uploadDevice(it)
             Log.d(TAG, "uploaded $it")
         }
+    }
+
+
+    private fun checkIn() {
+        Log.d(TAG, "moving to check in details fragment")
+
+        val checkBox1 = view?.symptom1 as CheckBox
+        val checkBox2 = view?.symptom2 as CheckBox
+        val checkBox3 = view?.symptom3 as CheckBox
+        val checkBox4 = view?.symptom4 as CheckBox
+
+        if (!checkBox1.isChecked() && !checkBox2.isChecked() && !checkBox3.isChecked() && !checkBox4.isChecked()) {
+            Toast.makeText(context, "Glad you feel okay. Stay safe!", Toast.LENGTH_SHORT).show()
+
+            replaceFragment(CheckinDetailFragment())
+
+            return
+        }
+
+        val isFever = checkBox1.isChecked()
+        val isCough = checkBox2.isChecked()
+        val isTasteLoss = checkBox3.isChecked()
+        val isSoreThroat = checkBox4.isChecked()
+
+        val checkinRecord = CheckinRecordEntity(
+            0,
+            isFever,
+            isCough,
+            isTasteLoss,
+            isSoreThroat,
+            System.currentTimeMillis(),
+            System.currentTimeMillis()
+        )
+
+        val checkinRecordDao = RoomDb.getAppDatabase(this.context!!)?.checkinRecordDao()
+        val id = checkinRecordDao?.insert(checkinRecord)
+
+        Log.d(TAG, "Record $id was saved $checkinRecord")
+
+        // Reset
+        checkBox1.setChecked(false);
+        checkBox2.setChecked(false);
+        checkBox3.setChecked(false);
+        checkBox4.setChecked(false);
+
+        replaceFragment(CheckinDetailFragment())
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()!!
+        fragmentTransaction.replace(R.id.f1_wrapper, fragment)
+        fragmentTransaction.disallowAddToBackStack()
+        fragmentTransaction.commit()
     }
 
 }
