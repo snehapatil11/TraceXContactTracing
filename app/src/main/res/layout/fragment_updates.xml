@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:visibility="visible"
     tools:context=".bottomnav.fragments.UpdatesFragment">
 
@@ -25,14 +26,109 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="16dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/VaccineCardView"
+                android:layout_width="358dp"
+                android:layout_height="180dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="256dp"
+                android:layout_marginEnd="20dp"
+                android:background="#FFFFFF"
+                android:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.538"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="180dp"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginEnd="180dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vaccine2Text"
+                    android:layout_width="78dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="247dp"
+                    android:layout_marginTop="112dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="Vaccination  Completed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vaccine1Text"
+                    android:layout_width="84dp"
+                    android:layout_height="51dp"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="108dp"
+                    android:layout_marginEnd="247dp"
+                    android:text="Vaccination  Initiated"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vaccine2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="244dp"
+                    android:layout_marginTop="68dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="250000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vaccine1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginEnd="247dp"
+                    android:text="250000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="51dp"
+                    android:layout_height="57dp"
+                    android:layout_marginStart="150dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="150dp"
+                    android:src="@drawable/im_vaccine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/ChartCardView"
                 android:layout_width="362dp"
                 android:layout_height="283dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="268dp"
+                android:layout_marginTop="484dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -52,11 +148,12 @@
                 android:layout_width="358dp"
                 android:layout_height="85dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="164dp"
+                android:layout_marginTop="156dp"
                 android:layout_marginEnd="20dp"
                 android:background="#FFFFFF"
                 android:elevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
