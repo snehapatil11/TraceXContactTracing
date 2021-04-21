@@ -6,7 +6,7 @@ import com.example.tracexcontacttracing.data.CheckinRecordEntity
 @Dao
 interface CheckinRecordDao {
     @Query("SELECT * FROM checkin_record")
-    fun getAllCheckinRecordEntities(): List<CheckinRecordEntity>?
+    fun getAll(): List<CheckinRecordEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(checkinRecord: CheckinRecordEntity): Long
