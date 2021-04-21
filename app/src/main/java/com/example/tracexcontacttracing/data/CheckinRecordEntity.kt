@@ -14,4 +14,8 @@ data class CheckinRecordEntity(
     @ColumnInfo(name = "created_at") val createdAt: Long,
     @ColumnInfo(name = "modified_at") val modifiedAt: Long
 ) {
+
+    override fun toString(): String {
+        return "CheckinRecordEntity(recordId=$recordId, fever=$fever, cough=$cough, tasteLoss=$tasteLoss, soreThroat=$soreThroat, createdAt=$createdAt, modifiedAt=$modifiedAt)"
+    }
 }
