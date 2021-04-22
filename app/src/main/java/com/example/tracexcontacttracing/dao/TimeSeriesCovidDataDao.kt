@@ -1,6 +1,7 @@
 package com.example.tracexcontacttracing.dao
 
 import androidx.room.*
+import com.example.tracexcontacttracing.data.CovidMonthlyStatsTuple
 import com.example.tracexcontacttracing.data.TimeSeriesCovidDataEntity
 
 @Dao
@@ -17,8 +18,8 @@ interface TimeSeriesCovidDataDao {
     @Query("SELECT max(modified_at) FROM timeseries_covid_data")
     fun getLastUpdatedTsForData(): Long
 
-    //@Query("SELECT  FROM timeseries_covid_data")
-    //fun getMonthlyData(): (String, Long)
+    @Query("SELECT monthGroup, sum(newCases) as newCases FROM timeseries_covid_data group by monthGroup order by year,month")
+    fun getMonthlyData(): List<CovidMonthlyStatsTuple>?
 
     @Query("DELETE FROM timeseries_covid_data")
     fun deleteAll()

@@ -16,13 +16,13 @@ import com.example.tracexcontacttracing.data.TimeSeriesCovidDataEntity
 import com.example.tracexcontacttracing.data.UserDeviceEntity
 
 
-@Database(entities = [DeviceEntity::class, UserDeviceEntity::class, CheckinRecordEntity::class, StateCovidDataEntity::class, TimeSeriesCovidDataEntity::class], version = 4)
+@Database(entities = [DeviceEntity::class, UserDeviceEntity::class, CheckinRecordEntity::class, StateCovidDataEntity::class, TimeSeriesCovidDataEntity::class], version = 6)
 abstract class RoomDb : RoomDatabase() {
     abstract fun deviceDao(): DeviceDao?
     abstract fun userDeviceDao(): UserDeviceDao?
     abstract fun checkinRecordDao(): CheckinRecordDao?
     abstract fun stateCovidDataDao(): StateCovidDataDao?
-    abstract fun TimeSeriesCovidDataDao(): TimeSeriesCovidDataDao?
+    abstract fun timeSeriesCovidDataDao(): TimeSeriesCovidDataDao?
 
 
     companion object {
