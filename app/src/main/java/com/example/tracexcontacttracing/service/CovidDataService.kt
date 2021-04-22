@@ -6,6 +6,7 @@ import com.example.tracexcontacttracing.dao.StateCovidDataDao
 import com.example.tracexcontacttracing.dao.TimeSeriesCovidDataDao
 import com.example.tracexcontacttracing.data.StateCovidDataEntity
 import com.example.tracexcontacttracing.data.TimeSeriesCovidDataEntity
+import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -47,13 +48,6 @@ class CovidDataService {
             Log.i(TAG, "Clearing state covid data table")
             stateCovidDataDao?.deleteAll()
 
-            val currentTs = System.currentTimeMillis()
-            val lastUpdatedTsOfData = stateCovidDataDao?.getLastUpdatedTsForData()
-            lastUpdatedTsOfData.let {
-                if (currentTs- it!! < 1000*60*60*24) {
-
-               }
-            }
 
             val response  = khttp.get("https://api.covidactnow.org/v2/states.json?apiKey=eda8d946097542ebb42907f9f1b69040")
             val jsonResult:JSONArray = response.jsonArray
@@ -94,31 +88,27 @@ class CovidDataService {
 
     fun fetchAndStoreTimeSeriesCovidData(timeSeriesCovidDataDao: TimeSeriesCovidDataDao?) {
         try {
-            Log.i(TAG, "Clearing state covid data table")
+            Log.i(TAG, "Clearing TimeSeriesCovidData table")
             timeSeriesCovidDataDao?.deleteAll()
-            val currentTs = System.currentTimeMillis()
-            val lastUpdatedTsOfData = timeSeriesCovidDataDao?.getLastUpdatedTsForData()
-            lastUpdatedTsOfData.let {
-                if (currentTs- it!! < 1000*60*60*24) {
-
-                }
-            }
 
             val response  = khttp.get("https://api.covidactnow.org/v2/country/US.timeseries.json?apiKey=eda8d946097542ebb42907f9f1b69040")
-            val jsonResult:JSONArray = response.jsonArray
+            val mainResult = response.jsonObject
 
+            val jsonResult:JSONArray = mainResult.getJSONArray("actualsTimeseries")
 
             for (i in 0 until jsonResult.length()-1) {
                 val obj = jsonResult.getJSONObject(i);
-                val actualJsonObj = obj.getJSONObject("actualsTimeseries");
-                if(actualJsonObj!=null) {
+                if(obj!=null) {
                     try {
-                        val date = actualJsonObj.getString("date");
-                        val newCases = getSafeInt(actualJsonObj,"newCases");
-                        val newDeaths = getSafeInt(actualJsonObj,"newDeaths");
+                        val date = obj.getString("date");
+                        val d =  DateTime.parse(date);
+                        val newCases = getSafeInt(obj,"newCases");
+                        val newDeaths = getSafeInt(obj,"newDeaths");
+                        val year = d.year;
+                        val month = d.monthOfYear;
                         val created_at = System.currentTimeMillis();
                         val modified_at = System.currentTimeMillis();
-                        val entity = TimeSeriesCovidDataEntity(date,newCases,newDeaths,created_at,modified_at)
+                        val entity = TimeSeriesCovidDataEntity(date, getMonthGroup(date),year,month,newCases,newDeaths,created_at,modified_at)
                         val id = timeSeriesCovidDataDao?.insert(entity)
                         Log.i(TAG,"Successfully saved timeseries covid data $entity with id=$id")
                     } catch (e:Exception) {
@@ -135,6 +125,12 @@ class CovidDataService {
         }
 
     }
+
+    fun getMonthGroup(dateStr:String):String {
+        val d =  DateTime.parse(dateStr)
+        return "${d.monthOfYear().asShortText}'${Math.floorMod(d.year, 100)}"
+    }
+
 
 
 }

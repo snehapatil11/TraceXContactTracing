@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.data.CovidMonthlyStatsTuple
 import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
@@ -40,6 +41,7 @@ class UpdatesFragment : Fragment() {
     private var param2: String? = null
     private var covidDataService:CovidDataService = CovidDataService();
     val TAG = "UpdateFragment"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,12 +74,27 @@ class UpdatesFragment : Fragment() {
         val textViewVaccineCompleted = view.findViewById<TextView>(R.id.vaccine2);
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
+        StrictMode.allowThreadDiskWrites();
         val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
-        val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.TimeSeriesCovidDataDao()
+        val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.timeSeriesCovidDataDao()
         //TODO add logic to call store
 
-        covidDataService.fetchAndStoreStateCovidData(stateCovidDataDao)
-        covidDataService.fetchAndStoreTimeSeriesCovidData((timeSeriesCovidDataDao))
+
+        val currentTs = System.currentTimeMillis()
+        val lastUpdatedTsOfData = stateCovidDataDao?.getLastUpdatedTsForData()
+        if(lastUpdatedTsOfData!=null) {
+            val lastUpdatedDate = DateTime(lastUpdatedTsOfData).dayOfMonth
+            val currentDate = DateTime(currentTs).dayOfMonth
+            Log.i(TAG, "Last Updated Date is: "+lastUpdatedDate);
+            Log.i(TAG, "Current Date is: "+currentDate);
+
+            //if (currentTs- lastUpdatedTsOfData!! >= 1000*60) { // fetch after 1 min
+            if (currentDate != lastUpdatedDate) { // fetch once date changes
+                Log.i(TAG, "Fetching new data from Covid API")
+                covidDataService.fetchAndStoreStateCovidData(stateCovidDataDao)
+                covidDataService.fetchAndStoreTimeSeriesCovidData(timeSeriesCovidDataDao)
+            }
+        }
 
         val cases = stateCovidDataDao?.getTotalCases()
         val deaths = stateCovidDataDao?.getTotalDeaths()
@@ -87,6 +104,8 @@ class UpdatesFragment : Fragment() {
         val vaccineCompleted = stateCovidDataDao?.getTotalVaccinationCompleted();
 
         Log.i(TAG, "Total Cases: ${cases}, Total Deaths: ${deaths}")
+
+        val monthlyStats = timeSeriesCovidDataDao?.getMonthlyData();
 
         val dateToday = DateTime.now()
         val formatter = org.joda.time.format.DateTimeFormat.fullDate()
@@ -99,7 +118,7 @@ class UpdatesFragment : Fragment() {
         textViewVaccineInitiated.setText(vaccineInitiated.toString())
         textViewVaccineCompleted.setText(vaccineCompleted.toString())
         setBarChart()
-        setLineChart()
+        setLineChart(monthlyStats!!)
         return view;
     }
 
@@ -178,40 +197,26 @@ class UpdatesFragment : Fragment() {
         barChart?.invalidate();
     }
 
-    private fun setLineChart() {
+    private fun setLineChart(monthlyStats:List<CovidMonthlyStatsTuple>) {
 
         print("in line chart")
 
-
         val lineEntries = ArrayList<Entry>()
-        for (i in 0 until 12) {
+        val labels = ArrayList<String>()
+        for (i in 0 until monthlyStats?.size) {
             //val x:Float = (System.currentTimeMillis()/1000000).toFloat()-(i * 100)
             val x:Float = (i).toFloat()
-            val y:Float = (i*0.9).toFloat();
+            val y:Float = monthlyStats.get(i).newCases!!
             Log.i(TAG, "(${x}, ${y})")
-            if(x>0) {
+            if (x>0) {
                 lineEntries.add(Entry(x,y))
             }
+            labels.add(monthlyStats.get(i).monthGroup!!)
         }
 
         val dataSet =  LineDataSet(lineEntries, "Time series");
         val lineData = LineData(dataSet);
         lineChart?.setData(lineData);
-
-
-        val labels = ArrayList<String>()
-        labels.add("15-April")
-        labels.add("16-May")
-        labels.add("17-June")
-        labels.add("18-July")
-        labels.add("19-Aug")
-        labels.add("20-Sept")
-        labels.add("21-Oct")
-        labels.add("22-Nov")
-        labels.add("23-Dec")
-        labels.add("24-Jan")
-        labels.add("25-Feb")
-        labels.add("25-March")
 
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false
