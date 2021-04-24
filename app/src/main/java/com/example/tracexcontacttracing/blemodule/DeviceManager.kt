@@ -225,7 +225,7 @@ class DeviceManager(private val context: Context) {
             .build()
 
         val randomUUID = UUID.randomUUID().toString()
-        val finalString = randomUUID.substring(randomUUID.length - 4, randomUUID.length)
+        val finalString = randomUUID.substring(randomUUID.length - 6, randomUUID.length)
         val serviceDataByteArray = finalString.toByteArray()
 
         //store advertising UUID in room db
