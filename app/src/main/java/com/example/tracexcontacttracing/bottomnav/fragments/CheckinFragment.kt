@@ -14,9 +14,7 @@ import com.example.tracexcontacttracing.data.CheckinRecordEntity
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.fragment.CheckinDetailFragment
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
 import java.util.*
 
@@ -33,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class CheckinFragment : Fragment() {
     private val TAG = "CheckinFragment"
-    private lateinit var database: DatabaseReference
+    private lateinit var database: FirebaseFirestore
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -107,15 +105,30 @@ class CheckinFragment : Fragment() {
     }
 
     private fun uploadData() {
-        database = Firebase.database.reference
+        database = FirebaseFirestore.getInstance()
 
-        simulateDeviceUpload() // testing, comment out if not needed
+//        simulateDeviceUpload() // testing, comment out if not needed
 
         uploadExposedDevices() // actual upload
     }
 
     private fun uploadDevice(device: DeviceEntity) {
-        database.child("exposed_devices").child(device.deviceId).setValue(device)
+        val deviceData = hashMapOf(
+            "deviceId" to device.deviceId,
+            "deviceToken" to device.deviceToken,
+            "createdAt" to device.createdAt,
+            "modifiedAt" to device.modifiedAt
+        )
+
+        database.collection("exposed_devices")
+            .add(deviceData)
+            .addOnSuccessListener { documentReference ->
+                Log.d(
+                    TAG,
+                    "DocumentSnapshot added with ID: " + documentReference.id
+                )
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
         Toast.makeText(context, "Device ${device.deviceId} Data Uploaded", Toast.LENGTH_SHORT).show()
     }
@@ -136,6 +149,9 @@ class CheckinFragment : Fragment() {
     }
 
     private fun uploadExposedDevices() {
+        val userDeviceDao = RoomDb.getAppDatabase(this.requireContext())?.userDeviceDao()
+        val ownDevices = userDeviceDao?.getUserDeviceData()
+
         val deviceDao = RoomDb.getAppDatabase(this.requireContext())?.deviceDao()
         val devices = deviceDao?.getDeviceData()
 
