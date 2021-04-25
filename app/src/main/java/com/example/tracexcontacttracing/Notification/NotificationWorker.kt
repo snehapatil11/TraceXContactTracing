@@ -24,6 +24,7 @@ import kotlin.collections.ArrayList
 class NotificationWorker(context: Context, params: WorkerParameters):Worker(context,params) {
 
     private lateinit var database: FirebaseFirestore
+    val notificationdao = RoomDb.getAppDatabase(this.applicationContext!!)?.notificationMsgHistoryDao()
 
     companion object {
         const val CHANNEL_ID = "TraceX_Channel_ID"
@@ -33,10 +34,15 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
     override fun doWork(): ListenableWorker.Result {
 
+        deletePastRecordsRoom()
         findMatchingAdID()
 //        showNotification()
         return Result.success()
 
+    }
+
+    private fun deletePastRecordsRoom(){
+        notificationdao?.deleteNotificationHistory()
     }
 
     private fun showNotification(exposedDates: ArrayList<Long>) {
@@ -127,7 +133,6 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
     private fun saveExposedDatetoRoomDb(exposedDates: ArrayList<Long>) {
         exposedDates?.forEach {
             val notification = NotificationMsgHistoryEntity(it)
-            val notificationdao = RoomDb.getAppDatabase(this.applicationContext!!)?.notificationMsgHistoryDao()
             val msgDate = notificationdao?.insert(notification)
             Log.i("MessageDate", "saved $notification as $msgDate")
         }
