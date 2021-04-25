@@ -10,6 +10,9 @@ import android.widget.TextView
 import com.example.tracexcontacttracing.data.CheckinRecordEntity
 import com.google.common.primitives.Booleans
 import kotlinx.android.synthetic.main.list_record.view.*
+import java.sql.Date
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -58,9 +61,9 @@ class CheckinRecordAdapter(
 
         val symptomList = symps.joinToString(" | ")
 
-        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        val instant = Instant.ofEpochMilli(currentRecord.createdAt)
-        val createdDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        val formatter = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
+        val stamp = Timestamp(currentRecord.createdAt)
+        val createdDate = Date(stamp.getTime())
 
         sympsNum.text = "$symptomsNum Symptom(s)"
         symptoms.text = symptomList
