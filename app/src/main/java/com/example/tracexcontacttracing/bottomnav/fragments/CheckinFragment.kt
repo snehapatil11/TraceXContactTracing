@@ -172,12 +172,25 @@ class CheckinFragment : Fragment() {
 
         if (!checkBox1.isChecked() && !checkBox2.isChecked() && !checkBox3.isChecked() && !checkBox4.isChecked()) {
             Toast.makeText(context, "Glad you feel okay. Stay safe!", Toast.LENGTH_SHORT).show()
-
-            replaceFragment(CheckinDetailFragment())
-
-            return
         }
 
+        uploadRecord(checkBox1, checkBox2, checkBox3, checkBox4)
+
+        // Reset
+        checkBox1.setChecked(false);
+        checkBox2.setChecked(false);
+        checkBox3.setChecked(false);
+        checkBox4.setChecked(false);
+
+        replaceFragment(CheckinDetailFragment())
+    }
+
+    private fun uploadRecord(
+        checkBox1: CheckBox,
+        checkBox2: CheckBox,
+        checkBox3: CheckBox,
+        checkBox4: CheckBox
+    ) {
         val isFever = checkBox1.isChecked()
         val isCough = checkBox2.isChecked()
         val isTasteLoss = checkBox3.isChecked()
@@ -197,14 +210,6 @@ class CheckinFragment : Fragment() {
         val id = checkinRecordDao?.insert(checkinRecord)
 
         Log.d(TAG, "Record $id was saved $checkinRecord")
-
-        // Reset
-        checkBox1.setChecked(false);
-        checkBox2.setChecked(false);
-        checkBox3.setChecked(false);
-        checkBox4.setChecked(false);
-
-        replaceFragment(CheckinDetailFragment())
     }
 
     private fun replaceFragment(fragment: Fragment) {
