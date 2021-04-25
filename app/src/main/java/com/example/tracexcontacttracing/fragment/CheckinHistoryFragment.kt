@@ -15,18 +15,14 @@ import com.example.tracexcontacttracing.database.RoomDb
 import kotlinx.android.synthetic.main.fragment_checkin_details.view.*
 
 
-class CheckinDetailFragment : Fragment() {
+class CheckinHistoryFragment : Fragment() {
     private val TAG = "CheckinDetailFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_checkin_details, container, false)
-
-        view.read_more.setOnClickListener {
-            goToUrl("https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html/")
-        }
+        val view = inflater.inflate(R.layout.fragment_checkin_history, container, false)
 
         val checkinRecordDao = RoomDb.getAppDatabase(this.context!!)?.checkinRecordDao()
         val checkinRecords = checkinRecordDao!!.getAll()
@@ -42,11 +38,5 @@ class CheckinDetailFragment : Fragment() {
 
         // Inflate the layout for this fragment
         return view
-    }
-
-    private fun goToUrl(url: String) {
-        val uriUrl: Uri = Uri.parse(url)
-        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
-        startActivity(launchBrowser)
     }
 }

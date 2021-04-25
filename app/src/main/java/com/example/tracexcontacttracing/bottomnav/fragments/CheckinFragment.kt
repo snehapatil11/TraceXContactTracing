@@ -14,6 +14,7 @@ import com.example.tracexcontacttracing.data.CheckinRecordEntity
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.fragment.CheckinDetailFragment
+import com.example.tracexcontacttracing.fragment.CheckinHistoryFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
 import java.util.*
@@ -57,6 +58,10 @@ class CheckinFragment : Fragment() {
 
         view.uploadData.setOnClickListener {
             getConsent()
+        }
+
+        view.viewHistory.setOnClickListener {
+            replaceFragment(CheckinHistoryFragment())
         }
 
         // Inflate the layout for this fragment
@@ -172,12 +177,25 @@ class CheckinFragment : Fragment() {
 
         if (!checkBox1.isChecked() && !checkBox2.isChecked() && !checkBox3.isChecked() && !checkBox4.isChecked()) {
             Toast.makeText(context, "Glad you feel okay. Stay safe!", Toast.LENGTH_SHORT).show()
-
-            replaceFragment(CheckinDetailFragment())
-
-            return
         }
 
+        uploadRecord(checkBox1, checkBox2, checkBox3, checkBox4)
+
+        // Reset
+        checkBox1.setChecked(false);
+        checkBox2.setChecked(false);
+        checkBox3.setChecked(false);
+        checkBox4.setChecked(false);
+
+        replaceFragment(CheckinDetailFragment())
+    }
+
+    private fun uploadRecord(
+        checkBox1: CheckBox,
+        checkBox2: CheckBox,
+        checkBox3: CheckBox,
+        checkBox4: CheckBox
+    ) {
         val isFever = checkBox1.isChecked()
         val isCough = checkBox2.isChecked()
         val isTasteLoss = checkBox3.isChecked()
@@ -197,20 +215,12 @@ class CheckinFragment : Fragment() {
         val id = checkinRecordDao?.insert(checkinRecord)
 
         Log.d(TAG, "Record $id was saved $checkinRecord")
-
-        // Reset
-        checkBox1.setChecked(false);
-        checkBox2.setChecked(false);
-        checkBox3.setChecked(false);
-        checkBox4.setChecked(false);
-
-        replaceFragment(CheckinDetailFragment())
     }
 
     private fun replaceFragment(fragment: Fragment) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()!!
         fragmentTransaction.replace(R.id.f1_wrapper, fragment)
-        fragmentTransaction.disallowAddToBackStack()
+        fragmentTransaction.addToBackStack("tag")
         fragmentTransaction.commit()
     }
 
