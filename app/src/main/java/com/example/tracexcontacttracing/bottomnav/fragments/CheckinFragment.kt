@@ -14,6 +14,7 @@ import com.example.tracexcontacttracing.data.CheckinRecordEntity
 import com.example.tracexcontacttracing.data.DeviceEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.fragment.CheckinDetailFragment
+import com.example.tracexcontacttracing.fragment.CheckinHistoryFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_checkin.view.*
 import java.util.*
@@ -57,6 +58,10 @@ class CheckinFragment : Fragment() {
 
         view.uploadData.setOnClickListener {
             getConsent()
+        }
+
+        view.viewHistory.setOnClickListener {
+            replaceFragment(CheckinHistoryFragment())
         }
 
         // Inflate the layout for this fragment
@@ -215,7 +220,7 @@ class CheckinFragment : Fragment() {
     private fun replaceFragment(fragment: Fragment) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()!!
         fragmentTransaction.replace(R.id.f1_wrapper, fragment)
-        fragmentTransaction.disallowAddToBackStack()
+        fragmentTransaction.addToBackStack("tag")
         fragmentTransaction.commit()
     }
 
