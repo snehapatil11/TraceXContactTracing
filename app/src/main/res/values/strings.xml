@@ -105,10 +105,13 @@
     <string name="sore_throat">Sore throat</string>
     <string name="new_loss_of_taste_or_smell">New loss of taste or smell</string>
     <string name="do_you_experience_any_symptom_today">Do you experience any symptom today?</string>
-    <string name="upload_data">Upload Data</string>
+    <string name="upload_data">Share Devices Data</string>
     <string name="fever_or_chills">Fever or chills</string>
     <string name="cough">Cough</string>
     <string name="checkin_history">CheckIn History</string>
     <string name="textview">TextView</string>
+    <string name="check_in_history">Check-In History</string>
+    <string name="thank_you_for_checking_in">Thank you for checking in!</string>
+    <string name="what_to_do_next">What to do next if you experience any symptom</string>
 
 </resources>
