@@ -1,6 +1,8 @@
 package com.example.tracexcontacttracing.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +24,9 @@ class CheckinDetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_checkin_details, container, false)
 
+        view.read_more.setOnClickListener {
+            goToUrl("https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html/")
+        }
 
         val checkinRecordDao = RoomDb.getAppDatabase(this.context!!)?.checkinRecordDao()
         val checkinRecords = checkinRecordDao!!.getAll()
@@ -30,10 +35,20 @@ class CheckinDetailFragment : Fragment() {
 
         // TODO: Show next steps if showing symptoms
 
-        val checkinRecordAdapter = CheckinRecordAdapter(activity as Context, R.layout.list_record, checkinRecords)
+        val checkinRecordAdapter = CheckinRecordAdapter(
+            activity as Context,
+            R.layout.list_record,
+            checkinRecords
+        )
         view.recordListView.adapter = checkinRecordAdapter
 
         // Inflate the layout for this fragment
         return view
+    }
+
+    private fun goToUrl(url: String) {
+        val uriUrl: Uri = Uri.parse(url)
+        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
+        startActivity(launchBrowser)
     }
 }
