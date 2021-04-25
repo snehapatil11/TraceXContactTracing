@@ -14,9 +14,15 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.tracexcontacttracing.MainActivity
 import com.example.tracexcontacttracing.R
+import com.example.tracexcontacttracing.data.DeviceEntity
+import com.example.tracexcontacttracing.data.UserDeviceEntity
+import com.example.tracexcontacttracing.database.RoomDb
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class NotificationWorker(context: Context, params: WorkerParameters):Worker(context,params) {
+
+    private lateinit var database: FirebaseFirestore
 
     companion object {
         const val CHANNEL_ID = "TraceX_Channel_ID"
@@ -26,6 +32,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
     override fun doWork(): ListenableWorker.Result {
 
+        findMatchingAdID()
         showNotification()
         return Result.success()
 
@@ -69,6 +76,33 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private fun findMatchingAdID(){
+
+        val userDevicedao = RoomDb.getAppDatabase(this.applicationContext!!)?.userDeviceDao()
+        var arUserDevice = userDevicedao?.getUserDeviceId()
+
+        var arrayUserDeviceId: ArrayList<String> = ArrayList()
+        arUserDevice?.forEach {
+            arrayUserDeviceId.add(it.device_id!!)
+        }
+
+        Log.i("arUserDevice -->>", "$arUserDevice")
+        Log.i("arrayUserDeviceId -->>", "$arrayUserDeviceId")
+
+        database = FirebaseFirestore.getInstance()
+
+        val query = database.collection("exposed_devices")
+            .whereIn("deviceId", arrayUserDeviceId)
+//            .whereIn("deviceId", listOf("hd7r","d0db", "u8wa"))
+
+        query.get().addOnSuccessListener { queryDocumentSnapshots ->
+            for (snap in queryDocumentSnapshots) {
+                Log.i("FirestoreData", "${snap.id} => ${snap.data}")
+            }
+        }
+
     }
 
 
