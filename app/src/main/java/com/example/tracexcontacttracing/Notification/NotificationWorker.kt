@@ -14,8 +14,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.tracexcontacttracing.MainActivity
 import com.example.tracexcontacttracing.R
-import com.example.tracexcontacttracing.data.DeviceEntity
-import com.example.tracexcontacttracing.data.UserDeviceEntity
+import com.example.tracexcontacttracing.data.NotificationMsgHistoryEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -78,7 +77,9 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
         }
     }
 
-    private fun findMatchingAdID(){
+    private fun findMatchingAdID() {
+
+        var exposedDates: ArrayList<Long> = ArrayList()
 
         val userDevicedao = RoomDb.getAppDatabase(this.applicationContext!!)?.userDeviceDao()
         var arUserDevice = userDevicedao?.getUserDeviceId()
@@ -88,9 +89,6 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
             arrayUserDeviceId.add(it.device_id!!)
         }
 
-        Log.i("arUserDevice -->>", "$arUserDevice")
-        Log.i("arrayUserDeviceId -->>", "$arrayUserDeviceId")
-
         database = FirebaseFirestore.getInstance()
 
         val query = database.collection("exposed_devices")
@@ -99,11 +97,21 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
         query.get().addOnSuccessListener { queryDocumentSnapshots ->
             for (snap in queryDocumentSnapshots) {
-                Log.i("FirestoreData", "${snap.id} => ${snap.data}")
+//                Log.i("FirestoreData", "${snap.id} => ${snap.data.get("createdAt")}")
+                exposedDates.add(snap.data.get("createdAt") as Long)
             }
+            Log.i("Exposed Date List", "$exposedDates")
+            saveExposedDatetoRoomDb(exposedDates)
         }
-
     }
 
+    private fun saveExposedDatetoRoomDb(exposedDates: ArrayList<Long>) {
+        exposedDates.forEach {
+            val notification = NotificationMsgHistoryEntity(it)
+            val notificationdao = RoomDb.getAppDatabase(this.applicationContext!!)?.notificationMsgHistoryDao()
+            val msgDate = notificationdao?.insert(notification)
+            Log.i("MessageDate", "saved $notification as $msgDate")
+        }
+    }
 
 }
