@@ -17,6 +17,8 @@ import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.NotificationMsgHistoryEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class NotificationWorker(context: Context, params: WorkerParameters):Worker(context,params) {
@@ -32,30 +34,39 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
     override fun doWork(): ListenableWorker.Result {
 
         findMatchingAdID()
-        showNotification()
+//        showNotification()
         return Result.success()
 
     }
 
-    private fun showNotification(){
+    private fun showNotification(exposedDates: ArrayList<Long>) {
+
+        createNotificationChannel()
+
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0,intent, 0)
 
-        val notification = NotificationCompat.Builder(applicationContext,CHANNEL_ID)
-            .setContentTitle("TraceX Exposure")
-            .setContentText("You have been exposed!!!")
-            .setSmallIcon(R.drawable.ic_notification)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+        exposedDates.forEach {
 
-        createNotificationChannel()
+            val msg = generateMsg(it)
 
-        with(NotificationManagerCompat.from(applicationContext)){
-            notify(NOTIFICATION_ID, notification.build())
+            val notification = NotificationCompat.Builder(applicationContext,CHANNEL_ID)
+                .setContentTitle("TraceX Exposure Notification")
+                .setContentText(msg)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .bigText(msg))
+
+            with(NotificationManagerCompat.from(applicationContext)){
+                notify(NOTIFICATION_ID+1, notification.build())
+            }
+
         }
 
     }
@@ -63,7 +74,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
     private fun createNotificationChannel() {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channelName = "Channel Name: TraceX"
+            val channelName = "TraceX"
             val channelDescription = "Channel Description: TraceX"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(
@@ -75,6 +86,14 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private fun generateMsg(exposedDates: Long?): String {
+
+        val resultdate = exposedDates?.let { Date(it) }
+        val msg = "This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on " + resultdate + ". " +
+                "This person is home and we suggest you to take preventive measures as per DC Health guidelines."
+        return msg
     }
 
     private fun findMatchingAdID() {
@@ -106,12 +125,13 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
     }
 
     private fun saveExposedDatetoRoomDb(exposedDates: ArrayList<Long>) {
-        exposedDates.forEach {
+        exposedDates?.forEach {
             val notification = NotificationMsgHistoryEntity(it)
             val notificationdao = RoomDb.getAppDatabase(this.applicationContext!!)?.notificationMsgHistoryDao()
             val msgDate = notificationdao?.insert(notification)
             Log.i("MessageDate", "saved $notification as $msgDate")
         }
+        showNotification(exposedDates)
     }
 
 }
