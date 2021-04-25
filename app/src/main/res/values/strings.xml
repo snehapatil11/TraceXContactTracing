@@ -109,5 +109,6 @@
     <string name="fever_or_chills">Fever or chills</string>
     <string name="cough">Cough</string>
     <string name="checkin_history">CheckIn History</string>
+    <string name="textview">TextView</string>
 
 </resources>
