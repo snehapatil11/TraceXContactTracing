@@ -33,8 +33,6 @@ class CheckinDetailFragment : Fragment() {
 
         Log.d(TAG, "Historical records: $checkinRecords")
 
-        // TODO: Show next steps if showing symptoms
-
         val checkinRecordAdapter = CheckinRecordAdapter(
             activity as Context,
             R.layout.list_record,

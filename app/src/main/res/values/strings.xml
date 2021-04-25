@@ -113,5 +113,7 @@
     <string name="check_in_history">Check-In History</string>
     <string name="thank_you_for_checking_in">Thank you for checking in!</string>
     <string name="what_to_do_next">What to do next if you experience any symptom</string>
+    <string name="view_check_in_history">View Check-In History</string>
+    <string name="read_more">Read More</string>
 
 </resources>
