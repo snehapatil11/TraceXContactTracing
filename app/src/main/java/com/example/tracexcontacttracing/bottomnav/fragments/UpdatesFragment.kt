@@ -83,8 +83,6 @@ class UpdatesFragment : Fragment() {
         StrictMode.allowThreadDiskWrites();
         val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
         val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.timeSeriesCovidDataDao()
-        //TODO add logic to call store
-
 
         val currentTs = System.currentTimeMillis()
         val lastUpdatedTsOfData = stateCovidDataDao?.getLastUpdatedTsForData()

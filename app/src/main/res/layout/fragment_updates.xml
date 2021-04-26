@@ -220,7 +220,7 @@
                                     app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <androidx.cardview.widget.CardView
+                            <!--<androidx.cardview.widget.CardView
                                 android:id="@+id/ChartCardView"
                                 android:layout_width="358dp"
                                 android:layout_height="250dp"
@@ -241,7 +241,7 @@
                                     android:layout_marginTop="30dp"
                                     android:layout_marginEnd="20dp"
                                     android:layout_marginRight="10dp" />
-                            </androidx.cardview.widget.CardView>
+                            </androidx.cardview.widget.CardView>-->
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/ShieldCardView"
