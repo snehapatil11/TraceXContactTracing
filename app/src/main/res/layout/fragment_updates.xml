@@ -53,7 +53,7 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/TabView"
                                 android:layout_width="match_parent"
-                                android:layout_height="360dp"
+                                android:layout_height="330dp"
                                 android:layout_marginStart="20dp"
                                 android:layout_marginTop="500dp"
                                 android:layout_marginEnd="20dp"
@@ -63,16 +63,18 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
-                                <EditText
-                                    android:id="@+id/tabTitle"
+                                <TextView
+                                    android:id="@+id/dailyCasesText"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:outlineProvider="none"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="229dp"
                                     android:text="Daily Confirmed Cases"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 

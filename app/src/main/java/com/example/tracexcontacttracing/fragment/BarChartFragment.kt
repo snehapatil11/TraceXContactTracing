@@ -65,6 +65,8 @@ class BarChartFragment : Fragment(){
         barChart?.data = data // set the data and list of lables into chart
 
         barChart?.description  // set the description
+        barDataSet.setDrawValues(false)
+        barChart?.getLegend()?.setEnabled(false);
 
         //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
         barDataSet.color = resources.getColor(R.color.colorAccent)
@@ -73,6 +75,7 @@ class BarChartFragment : Fragment(){
         xAxis?.valueFormatter = IndexAxisValueFormatter(labels)
         xAxis?.setLabelCount(6)
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
+
         //xAxis?.granularity = 2f
         // xAxis?.setCenterAxisLabels(true)
         // xAxis?.isGranularityEnabled = true
