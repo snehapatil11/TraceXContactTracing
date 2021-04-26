@@ -42,8 +42,6 @@ private const val ARG_PARAM2 = "param2"
 class UpdatesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var barChart: BarChart? = null
-    private var lineChart: LineChart? = null
     private var param2: String? = null
     private var covidDataService:CovidDataService = CovidDataService();
     val TAG = "UpdateFragment"
@@ -69,8 +67,6 @@ class UpdatesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_updates, container, false);
-        barChart =  view.findViewById<BarChart>(R.id.barChart);
-        lineChart = view.findViewById<LineChart>(R.id.lineChart)
         val textViewCases = view.findViewById<TextView>(R.id.cases);
         val textViewDeaths = view.findViewById<TextView>(R.id.deaths);
         val textViewNewCases = view.findViewById<TextView>(R.id.newCases);
@@ -109,8 +105,6 @@ class UpdatesFragment : Fragment() {
 
         Log.i(TAG, "Total Cases: ${cases}, Total Deaths: ${deaths}")
 
-        val monthlyStats = timeSeriesCovidDataDao?.getMonthlyData();
-
         val dateToday = DateTime.now()
         val formatter = org.joda.time.format.DateTimeFormat.fullDate()
         val formatted = formatter.print(dateToday)
@@ -121,8 +115,6 @@ class UpdatesFragment : Fragment() {
         textViewTodayDate.setText(formatted.toString())
         textViewVaccineInitiated.setText(vaccineInitiated.toString())
         textViewVaccineCompleted.setText(vaccineCompleted.toString())
-        setBarChart()
-        setLineChart(monthlyStats!!)
 
         // Tabs
         val tabLayout =  view.findViewById<TabLayout>(R.id.tabLayout);
@@ -169,101 +161,6 @@ class UpdatesFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
-
-    private fun setBarChart() {
-
-        print("in bar chart")
-
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(1f, 0.5f))
-        entries.add(BarEntry(1f, 1f))
-        entries.add(BarEntry(2f, 2f))
-        entries.add(BarEntry(3f, 2f))
-        entries.add(BarEntry(4f, 1.5f))
-        entries.add(BarEntry(5f, 1f))
-        entries.add(BarEntry(6f, 1f))
-
-        val barDataSet = BarDataSet(entries, "Cells")
-
-        val labels = ArrayList<String>()
-        labels.add("15-April")
-        labels.add("16-April")
-        labels.add("17-April")
-        labels.add("18-April")
-        labels.add("19-April")
-        labels.add("20-April")
-        labels.add("21-April")
-        val data = BarData(barDataSet)
-        barChart?.data = data // set the data and list of lables into chart
-
-        barChart?.description  // set the description
-
-        //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
-        barDataSet.color = resources.getColor(R.color.colorAccent)
-
-        val xAxis = barChart?.xAxis
-        xAxis?.valueFormatter = IndexAxisValueFormatter(labels)
-        xAxis?.setLabelCount(6)
-        xAxis?.position = XAxis.XAxisPosition.BOTTOM
-        //xAxis?.granularity = 2f
-       // xAxis?.setCenterAxisLabels(true)
-       // xAxis?.isGranularityEnabled = true
-
-        val barSpace = 0.02f
-        val groupSpace = 0.3f
-        val groupCount = 4f
-
-        data.barWidth = 0.45f
-        barChart?.setNoDataTextColor(R.color.colorPrimaryDark)
-        barChart?.setTouchEnabled(true)
-        barChart?.description?.isEnabled = false
-        //barChart?.xAxis?.axisMinimum = 0f
-
-       // barChart?.groupBars(0f, groupSpace, barSpace)
-
-        barChart?.animateY(500)
-        barChart?.invalidate();
-    }
-
-    private fun setLineChart(monthlyStats:List<CovidMonthlyStatsTuple>) {
-
-        print("in line chart")
-
-        val lineEntries = ArrayList<Entry>()
-        val labels = ArrayList<String>()
-        for (i in 0 until monthlyStats?.size) {
-            //val x:Float = (System.currentTimeMillis()/1000000).toFloat()-(i * 100)
-            val x:Float = (i).toFloat()
-            val y:Float = monthlyStats.get(i).newCases!!
-            Log.i(TAG, "(${x}, ${y})")
-            if (x>0) {
-                lineEntries.add(Entry(x,y))
-            }
-            labels.add(monthlyStats.get(i).monthGroup!!)
-        }
-
-        val dataSet =  LineDataSet(lineEntries, "Time series");
-        val lineData = LineData(dataSet);
-        lineChart?.setData(lineData);
-
-        lineChart?.setTouchEnabled(true)
-        lineChart?.description?.isEnabled = false
-        //barChart?.xAxis?.axisMinimum = 0f
-
-        // barChart?.groupBars(0f, groupSpace, barSpace)
-        val xAxis = lineChart?.xAxis
-        xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
-            /*
-            object : ValueFormatter() {
-            override fun getFormattedValue(value: Float, axis: AxisBase): String {
-                return
-            }
-        }
-             */
-
-        lineChart?.animateY(500)
-        lineChart?.invalidate();
     }
 
 }
