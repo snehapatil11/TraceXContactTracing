@@ -12,6 +12,9 @@ interface TimeSeriesCovidDataDao {
     @Query("SELECT * FROM timeseries_covid_data where created_at >= (strftime('%s', 'now') -(604800 * 2))")
     fun get2WeeksTimeSeriesData(): List<TimeSeriesCovidDataEntity>?
 
+    @Query("SELECT * FROM timeseries_covid_data where created_at >= (strftime('%s', 'now') -(604800 * 8))")
+    fun get2MonthsTimeSeriesData(): List<TimeSeriesCovidDataEntity>?
+
     @Query("SELECT newCases FROM timeseries_covid_data")
     fun getCasesTimeSeries(): Int?
 

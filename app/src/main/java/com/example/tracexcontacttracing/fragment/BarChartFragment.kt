@@ -36,7 +36,6 @@ class BarChartFragment : Fragment(){
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
         StrictMode.allowThreadDiskWrites();
-        val stateCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.stateCovidDataDao()
         val timeSeriesCovidDataDao = RoomDb.getAppDatabase(this.context!!)?.timeSeriesCovidDataDao()
         setBarChart(timeSeriesCovidDataDao);
         return view;
