@@ -10,6 +10,9 @@ interface NotificationMsgHistoryDao {
     @Query("SELECT * FROM notificationHistory")
     fun getAllNotificationMsgHistoryData(): List<NotificationMsgHistoryEntity>?
 
+    @Query("DELETE FROM notificationHistory WHERE ExposureDate <= date('now','-14 day')")
+    fun deleteNotificationHistory()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(notifictaion: NotificationMsgHistoryEntity): Long
 
