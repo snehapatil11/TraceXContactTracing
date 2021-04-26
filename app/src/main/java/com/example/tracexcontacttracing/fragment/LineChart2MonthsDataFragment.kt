@@ -1,5 +1,6 @@
 package com.example.tracexcontacttracing.fragment
 
+import android.graphics.Color.red
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.dao.TimeSeriesCovidDataDao
 import com.example.tracexcontacttracing.database.RoomDb
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -55,14 +57,21 @@ class LineChart2MonthsDataFragment : Fragment(){
         val dataSet =  LineDataSet(lineEntries, "Time series");
         val lineData = LineData(dataSet);
         lineChart?.setData(lineData);
+        dataSet.setDrawValues(false)
+        dataSet.setDrawFilled(true)
+        dataSet.lineWidth = 3f
+        dataSet.fillColor = R.color.colorPrimaryDark
+        dataSet.fillAlpha = R.color.colorPrimary
 
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false
+        lineChart?.getLegend()?.setEnabled(false);
         //barChart?.xAxis?.axisMinimum = 0f
 
         // barChart?.groupBars(0f, groupSpace, barSpace)
         val xAxis = lineChart?.xAxis
         xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
+        xAxis?.position = XAxis.XAxisPosition.BOTTOM
         /*
         object : ValueFormatter() {
         override fun getFormattedValue(value: Float, axis: AxisBase): String {
