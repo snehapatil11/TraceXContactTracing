@@ -3,13 +3,13 @@ package com.example.tracexcontacttracing.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.util.Log
-import androidx.work.ListenableWorker
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.tracexcontacttracing.MainActivity
@@ -17,7 +17,9 @@ import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.NotificationMsgHistoryEntity
 import com.example.tracexcontacttracing.database.RoomDb
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -36,7 +38,6 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
         deletePastRecordsRoom()
         findMatchingAdID()
-//        showNotification()
         return Result.success()
 
     }
@@ -115,10 +116,11 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
         }
 
         database = FirebaseFirestore.getInstance()
+        val cutoff = Date().time - TimeUnit.MILLISECONDS.convert(14, TimeUnit.DAYS)
 
         val query = database.collection("exposed_devices")
+            .whereGreaterThanOrEqualTo("createdAt", cutoff).orderBy("createdAt", Query.Direction.DESCENDING)
             .whereIn("deviceId", arrayUserDeviceId)
-//            .whereIn("deviceId", listOf("hd7r","d0db", "u8wa"))
 
         query.get().addOnSuccessListener { queryDocumentSnapshots ->
             for (snap in queryDocumentSnapshots) {
