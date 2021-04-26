@@ -35,12 +35,15 @@ class CovidDataService {
     }*/
 
     fun getSafeInt(jsonObject:JSONObject, key: String): Int {
-        if (jsonObject==null) return 0;
-        val t = jsonObject.getInt(key)
-        if (t == null) {
-            return 0
+        try {
+            val t = jsonObject.getInt(key)
+            if (t == null) {
+                return 0
+            }
+            return t;
+        } catch(e:java.lang.Exception) {
+            return 0;
         }
-        else return t
     }
 
     fun fetchAndStoreStateCovidData(stateCovidDataDao: StateCovidDataDao?) {
@@ -106,7 +109,7 @@ class CovidDataService {
                         val newDeaths = getSafeInt(obj,"newDeaths");
                         val year = d.year;
                         val month = d.monthOfYear;
-                        val created_at = System.currentTimeMillis();
+                        val created_at = d.millis/1000;
                         val modified_at = System.currentTimeMillis();
                         val entity = TimeSeriesCovidDataEntity(date, getMonthGroup(date),year,month,newCases,newDeaths,created_at,modified_at)
                         val id = timeSeriesCovidDataDao?.insert(entity)

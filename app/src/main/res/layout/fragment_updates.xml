@@ -1,364 +1,382 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:elevation="10dp"
-    android:visibility="visible"
-    tools:context=".bottomnav.fragments.UpdatesFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
 
-        <LinearLayout
+
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:elevation="10dp"
+            android:visibility="visible"
+            tools:context=".bottomnav.fragments.UpdatesFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/updateScrollView"
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/updateLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/LineChartCard"
-                        android:layout_width="358dp"
-                        android:layout_height="250dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="505dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#FFFFFF"
-                        android:elevation="10dp"
+                        android:id="@+id/updateScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/lineChart"
-                            android:layout_width="334dp"
-                            android:layout_height="217dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginEnd="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/VaccineCardView"
-                        android:layout_width="358dp"
-                        android:layout_height="180dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="312dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#FFFFFF"
-                        android:elevation="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <View
-                            android:id="@+id/divider"
-                            android:layout_width="1dp"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/updateLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="180dp"
-                            android:layout_marginTop="70dp"
-                            android:layout_marginEnd="180dp"
-                            android:background="?android:attr/listDivider"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/vaccine2Text"
-                            android:layout_width="78dp"
-                            android:layout_height="45dp"
-                            android:layout_marginStart="247dp"
-                            android:layout_marginTop="112dp"
-                            android:layout_marginEnd="40dp"
-                            android:text="Vaccination  Completed"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/vaccine1Text"
-                            android:layout_width="84dp"
-                            android:layout_height="51dp"
-                            android:layout_marginStart="35dp"
-                            android:layout_marginTop="108dp"
-                            android:layout_marginEnd="247dp"
-                            android:text="Vaccination  Initiated"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/TabView"
+                                android:layout_width="match_parent"
+                                android:layout_height="360dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="500dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FFFFFF"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/vaccine2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="244dp"
-                            android:layout_marginTop="68dp"
-                            android:layout_marginEnd="40dp"
-                            android:text="250000"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                                <EditText
+                                    android:id="@+id/tabTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:ems="10"
+                                    android:inputType="textPersonName"
+                                    android:outlineProvider="none"
+                                    android:text="Daily Confirmed Cases"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/vaccine1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="70dp"
-                            android:layout_marginEnd="247dp"
-                            android:text="250000"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                                <com.google.android.material.tabs.TabLayout
+                                    android:id="@+id/tabLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="50dp"
+                                    android:layout_marginEnd="20dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:tabGravity="fill"
+                                    app:tabMode="fixed" />
 
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="51dp"
-                            android:layout_height="57dp"
-                            android:layout_marginStart="150dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginEnd="150dp"
-                            android:src="@drawable/im_vaccine"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/viewpg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="100dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/VaccineCardView"
+                                android:layout_width="358dp"
+                                android:layout_height="180dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="312dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FFFFFF"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <View
+                                    android:id="@+id/divider"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="180dp"
+                                    android:layout_marginTop="70dp"
+                                    android:layout_marginEnd="180dp"
+                                    android:background="?android:attr/listDivider"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/vaccine2Text"
+                                    android:layout_width="78dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginStart="247dp"
+                                    android:layout_marginTop="112dp"
+                                    android:layout_marginEnd="40dp"
+                                    android:text="Vaccination  Completed"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/vaccine1Text"
+                                    android:layout_width="84dp"
+                                    android:layout_height="51dp"
+                                    android:layout_marginStart="35dp"
+                                    android:layout_marginTop="108dp"
+                                    android:layout_marginEnd="247dp"
+                                    android:text="Vaccination  Initiated"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/vaccine2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="244dp"
+                                    android:layout_marginTop="68dp"
+                                    android:layout_marginEnd="40dp"
+                                    android:text="250000"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/vaccine1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginTop="70dp"
+                                    android:layout_marginEnd="247dp"
+                                    android:text="250000"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView"
+                                    android:layout_width="51dp"
+                                    android:layout_height="57dp"
+                                    android:layout_marginStart="150dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginEnd="150dp"
+                                    android:src="@drawable/im_vaccine"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="1.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/ShieldCardView"
+                                android:layout_width="358dp"
+                                android:layout_height="85dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="216dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FFFFFF"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/checkinText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="140dp"
+                                    android:layout_marginTop="32dp"
+                                    android:text="Users uploaded data today"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/checkedIn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="100dp"
+                                    android:layout_marginTop="24dp"
+                                    android:text="22"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginTop="12dp"
+                                    android:src="@drawable/im_shield"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/CasesCardView"
+                                android:layout_width="361dp"
+                                android:layout_height="172dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="32dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FDFDFD"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/newDeathsText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="232dp"
+                                    android:layout_marginTop="132dp"
+                                    android:text="New Deaths"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/newCasesText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="108dp"
+                                    android:layout_marginTop="132dp"
+                                    android:text="New Cases"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/newDeaths"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="256dp"
+                                    android:layout_marginTop="108dp"
+                                    android:text="23"
+                                    android:textColor="#F44336"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/newCases"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="124dp"
+                                    android:layout_marginTop="108dp"
+                                    android:text="200"
+                                    android:textColor="#FF9800"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView2"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="36dp"
+                                    android:layout_marginTop="72dp"
+                                    android:contentDescription="@corona virus image"
+                                    android:src="@drawable/im_coronavirus"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/cases"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="108dp"
+                                    android:layout_marginTop="48dp"
+                                    android:inputType="number"
+                                    android:text="31069248"
+                                    android:textColor="@android:color/holo_orange_dark"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/deaths"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="248dp"
+                                    android:layout_marginTop="48dp"
+                                    android:text="560000"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/datetoday"
+                                    android:layout_width="250dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:text="24th March 2021"
+                                    android:textSize="16sp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/casesText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="108dp"
+                                    android:layout_marginTop="72dp"
+                                    android:text="Total Cases"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/deathsText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="240dp"
+                                    android:layout_marginTop="72dp"
+                                    android:text="Total Deaths"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </ScrollView>
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/ChartCardView"
-                        android:layout_width="358dp"
-                        android:layout_height="250dp"
-                        android:layout_marginStart="27dp"
-                        android:layout_marginTop="760dp"
-                        android:layout_marginEnd="27dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.433"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/barChart"
-                            android:layout_width="334dp"
-                            android:layout_height="217dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="10dp" />
-                    </androidx.cardview.widget.CardView>
+    </androidx.core.widget.NestedScrollView>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ShieldCardView"
-                        android:layout_width="358dp"
-                        android:layout_height="85dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="216dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#FFFFFF"
-                        android:elevation="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/checkinText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="140dp"
-                            android:layout_marginTop="32dp"
-                            android:text="Users Checked-in today"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/checkedIn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="100dp"
-                            android:layout_marginTop="24dp"
-                            android:text="22"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="12dp"
-                            android:src="@drawable/im_shield"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/CasesCardView"
-                        android:layout_width="361dp"
-                        android:layout_height="172dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#FDFDFD"
-                        android:elevation="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/newDeathsText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="232dp"
-                            android:layout_marginTop="132dp"
-                            android:text="New Deaths"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/newCasesText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="108dp"
-                            android:layout_marginTop="132dp"
-                            android:text="New Cases"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/newDeaths"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="256dp"
-                            android:layout_marginTop="108dp"
-                            android:text="23"
-                            android:textColor="#F44336"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/newCases"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="124dp"
-                            android:layout_marginTop="108dp"
-                            android:text="200"
-                            android:textColor="#FF9800"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="36dp"
-                            android:layout_marginTop="72dp"
-                            android:contentDescription="@corona virus image"
-                            android:src="@drawable/im_coronavirus"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/cases"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="108dp"
-                            android:layout_marginTop="48dp"
-                            android:inputType="number"
-                            android:text="31069248"
-                            android:textColor="@android:color/holo_orange_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/deaths"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="248dp"
-                            android:layout_marginTop="48dp"
-                            android:text="560000"
-                            android:textColor="@android:color/holo_red_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/datetoday"
-                            android:layout_width="250dp"
-                            android:layout_height="25dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="24th March 2021"
-                            android:textSize="16sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/casesText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="108dp"
-                            android:layout_marginTop="72dp"
-                            android:text="Total Cases"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/deathsText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="240dp"
-                            android:layout_marginTop="72dp"
-                            android:text="Total Deaths"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
