@@ -10,17 +10,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.CovidMonthlyStatsTuple
 import com.example.tracexcontacttracing.database.RoomDb
+import com.example.tracexcontacttracing.fragment.BarChartFragment
+import com.example.tracexcontacttracing.fragment.LineChart2MonthsDataFragment
+import com.example.tracexcontacttracing.fragment.LineChartAllDataFragment
+import com.example.tracexcontacttracing.fragment.tabs.ChartTabsAdapterV2
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayoutMediator
 import org.joda.time.DateTime
 
 // TODO: Rename parameter arguments, choose names that match
@@ -119,6 +125,31 @@ class UpdatesFragment : Fragment() {
         textViewVaccineCompleted.setText(vaccineCompleted.toString())
         setBarChart()
         setLineChart(monthlyStats!!)
+
+        // Tabs
+        val tabLayout =  view.findViewById<TabLayout>(R.id.tabLayout);
+        val viewPager =  view.findViewById<ViewPager2>(R.id.viewpg);
+
+        //val chartTabsAdapter = ChartTabsAdapter(fragmentManager!!)
+        val chartTabsAdapter = ChartTabsAdapterV2(this)
+        chartTabsAdapter.addFragment(BarChartFragment(), "Last 2 Weeks")
+        chartTabsAdapter.addFragment(LineChart2MonthsDataFragment(), "Last 2 Months")
+        chartTabsAdapter.addFragment(LineChartAllDataFragment(), "All")
+        //chartTabsAdapter.addFragment(BarChartFragment(), "Bar Chart2")
+        viewPager.adapter = chartTabsAdapter;
+        //tabLayout.setupWithViewPager(viewPager, true);
+        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {}
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        TabLayoutMediator(tabLayout, viewPager,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                tab.text = chartTabsAdapter.getTitle(position)
+                viewPager.setCurrentItem(tab.position, true)
+            }).attach()
+
         return view;
     }
 
