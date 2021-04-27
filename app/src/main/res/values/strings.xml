@@ -79,5 +79,6 @@
     <string name="what_to_do_next">What to do next if you experience any symptom</string>
     <string name="view_check_in_history">View Check-In History</string>
     <string name="read_more">Read More</string>
+    <string name="consent_message">If you have tested positive with COVID-19, it\'s a good idea to upload other users\' devices data that you have been in close contact with so they can be notified and take preventive measures. We will not upload any data related to your personal information.</string>
 
 </resources>
