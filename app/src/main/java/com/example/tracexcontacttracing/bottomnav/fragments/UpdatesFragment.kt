@@ -17,6 +17,7 @@ import com.example.tracexcontacttracing.database.RoomDb
 import com.example.tracexcontacttracing.fragment.BarChartFragment
 import com.example.tracexcontacttracing.fragment.LineChart2MonthsDataFragment
 import com.example.tracexcontacttracing.fragment.LineChartAllDataFragment
+import com.example.tracexcontacttracing.fragment.StateDataTableFragment
 import com.example.tracexcontacttracing.fragment.tabs.ChartTabsAdapterV2
 import com.example.tracexcontacttracing.service.CovidDataService
 import com.github.mikephil.charting.charts.BarChart
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.fragment_updates.*
 import org.joda.time.DateTime
 
 // TODO: Rename parameter arguments, choose names that match
@@ -74,6 +76,7 @@ class UpdatesFragment : Fragment() {
         val textViewTodayDate = view.findViewById<TextView>(R.id.datetoday);
         val textViewVaccineInitiated = view.findViewById<TextView>(R.id.vaccine1);
         val textViewVaccineCompleted = view.findViewById<TextView>(R.id.vaccine2);
+       // val viewTableButton = view.findViewById<TextView>(R.id.viewTableButton);
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
         StrictMode.allowThreadDiskWrites();
@@ -119,6 +122,7 @@ class UpdatesFragment : Fragment() {
         // Tabs
         val tabLayout =  view.findViewById<TabLayout>(R.id.tabLayout);
         val viewPager =  view.findViewById<ViewPager2>(R.id.viewpg);
+        viewPager.isSaveEnabled = false
 
         //val chartTabsAdapter = ChartTabsAdapter(fragmentManager!!)
         val chartTabsAdapter = ChartTabsAdapterV2(this)
@@ -139,6 +143,10 @@ class UpdatesFragment : Fragment() {
                 tab.text = chartTabsAdapter.getTitle(position)
                 viewPager.setCurrentItem(tab.position, true)
             }).attach()
+
+        //viewTableButton.setOnClickListener {
+        //    replaceFragment(StateDataTableFragment())
+        //}
 
         return view;
     }
@@ -162,5 +170,13 @@ class UpdatesFragment : Fragment() {
                 }
             }
     }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()!!
+        fragmentTransaction.replace(R.id.f1_wrapper, fragment)
+        fragmentTransaction.addToBackStack("tag")
+        fragmentTransaction.commit()
+    }
+
 
 }

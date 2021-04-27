@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import org.joda.time.DateTime
 
+
 class BarChartFragment : Fragment(){
     private var barChart: BarChart? = null;
     private var covidDataService: CovidDataService = CovidDataService();
@@ -67,6 +68,9 @@ class BarChartFragment : Fragment(){
         barChart?.description  // set the description
         barDataSet.setDrawValues(false)
         barChart?.getLegend()?.setEnabled(false);
+        barChart?.getAxisRight()?.setDrawGridLines(false);
+        barChart?.getAxisLeft()?.setDrawGridLines(false);
+        barChart?.getXAxis()?.setDrawGridLines(false);
 
         //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
         barDataSet.color = resources.getColor(R.color.colorAccent)
@@ -75,6 +79,9 @@ class BarChartFragment : Fragment(){
         xAxis?.valueFormatter = IndexAxisValueFormatter(labels)
         xAxis?.setLabelCount(6)
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
+
+        val rightYAxis = barChart!!.axisRight
+        rightYAxis.isEnabled = false
 
         //xAxis?.granularity = 2f
         // xAxis?.setCenterAxisLabels(true)

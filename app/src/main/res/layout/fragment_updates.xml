@@ -8,10 +8,11 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
+
+
         android:layout_height="match_parent"
-
-
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,11 +52,125 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/ShieldCardView"
+                                android:layout_width="358dp"
+                                android:layout_height="85dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FFFFFF"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.461"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/stateDataCard">
+
+                                <TextView
+                                    android:id="@+id/checkinText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="140dp"
+                                    android:layout_marginTop="32dp"
+                                    android:text="Users uploaded data today"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/checkedIn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="100dp"
+                                    android:layout_marginTop="24dp"
+                                    android:text="22"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginTop="12dp"
+                                    android:src="@drawable/im_shield"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/stateDataCard"
+                                android:layout_width="361dp"
+                                android:layout_height="88dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="215dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="#FFFFFF"
+                                android:elevation="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageButton
+                                    android:id="@+id/viewTableButton"
+                                    android:layout_width="43dp"
+                                    android:layout_height="64dp"
+                                    android:layout_marginStart="44dp"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginEnd="4dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.75"
+                                    app:layout_constraintStart_toEndOf="@+id/nationalText"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+
+                                <TextView
+                                    android:id="@+id/tapText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="35dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="102dp"
+                                    android:text="Tap for state breakdown"
+                                    android:textColor="#3F51B5"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                                    app:layout_constraintTop_toBottomOf="@+id/nationalText" />
+
+                                <TextView
+                                    android:id="@+id/nationalText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="50dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="112dp"
+                                    android:text="The national picture"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView4"
+                                    android:layout_width="65dp"
+                                    android:layout_height="60dp"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="306dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.1"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/im_usmap" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/TabView"
                                 android:layout_width="match_parent"
-                                android:layout_height="330dp"
+                                android:layout_height="310dp"
                                 android:layout_marginStart="20dp"
-                                android:layout_marginTop="500dp"
+                                android:layout_marginTop="600dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="#FFFFFF"
                                 android:elevation="10dp"
@@ -83,7 +198,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="20dp"
-                                    android:layout_marginTop="50dp"
+                                    android:layout_marginTop="30dp"
                                     android:layout_marginEnd="20dp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +210,7 @@
                                     android:id="@+id/viewpg"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginTop="100dp"
+                                    android:layout_marginTop="80dp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -107,11 +222,12 @@
                                 android:layout_width="358dp"
                                 android:layout_height="180dp"
                                 android:layout_marginStart="20dp"
-                                android:layout_marginTop="312dp"
+                                android:layout_marginTop="410dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="#FFFFFF"
                                 android:elevation="10dp"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.461"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -191,52 +307,6 @@
                                     android:src="@drawable/im_vaccine"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="1.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/ShieldCardView"
-                                android:layout_width="358dp"
-                                android:layout_height="85dp"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginTop="216dp"
-                                android:layout_marginEnd="20dp"
-                                android:background="#FFFFFF"
-                                android:elevation="10dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/checkinText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="140dp"
-                                    android:layout_marginTop="32dp"
-                                    android:text="Users uploaded data today"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/checkedIn"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="100dp"
-                                    android:layout_marginTop="24dp"
-                                    android:text="22"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <ImageView
-                                    android:id="@+id/imageView3"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginStart="30dp"
-                                    android:layout_marginTop="12dp"
-                                    android:src="@drawable/im_shield"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>

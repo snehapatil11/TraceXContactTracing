@@ -63,6 +63,9 @@ class LineChart2MonthsDataFragment : Fragment(){
         dataSet.fillColor = R.color.colorPrimaryDark
         dataSet.fillAlpha = R.color.colorPrimary
 
+        lineChart?.getAxisRight()?.setDrawGridLines(false);
+        lineChart?.getAxisLeft()?.setDrawGridLines(false);
+        lineChart?.getXAxis()?.setDrawGridLines(false);
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false
         lineChart?.getLegend()?.setEnabled(false);
@@ -72,6 +75,9 @@ class LineChart2MonthsDataFragment : Fragment(){
         val xAxis = lineChart?.xAxis
         xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
+
+        val rightYAxis = lineChart!!.axisRight
+        rightYAxis.isEnabled = false
         /*
         object : ValueFormatter() {
         override fun getFormattedValue(value: Float, axis: AxisBase): String {
