@@ -13,10 +13,6 @@ import kotlinx.android.synthetic.main.list_record.view.*
 import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class CheckinRecordAdapter(
     context: Context,
@@ -27,12 +23,10 @@ class CheckinRecordAdapter(
     private val inflater = LayoutInflater.from(context)
 
     override fun getCount(): Int {
-        Log.d(TAG, "getCount() called")
         return checkinRecords.size
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        Log.d(TAG, "getView() called")
         val view = inflater.inflate(resource, parent, false)
 
         val sympsNum: TextView = view.symps_num
