@@ -56,12 +56,7 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
     override fun onScanCompleted(deviceDataList: DeviceData) {
 
-        //Initiate a dialog Fragment from here and ask the user to select his device
-        // If the application already know the Mac address, we can simply call connect device
-
         mDeviceAddress = deviceDataList.mDeviceAddress
-        //ConnectionManagerBLE.connect(deviceDataList.mDeviceAddress)
-
     }
 
 
@@ -159,24 +154,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
     }
 
 
-    /**
-     *After receive the Location Permission, the Application need to initialize the
-     * BLE Module and BLE Service
-     */
-    /*private fun initBLEModule() {
-        // BLE initialization
-        if (!DeviceManagerBLE.init(this)) {
-            Toast.makeText(this, "BLE NOT SUPPORTED", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (!DeviceManagerBLE.isEnabled()) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-        }
-        startService(Intent(this, BLEService::class.java))
-        //ConnectionManagerBLE.initBLEService(this@MainActivity)
-    }*/
-
     private fun checkBluetooth(): Enums = deviceManager.checkBluetooth()
 
     private fun initBLEModule() {
@@ -229,21 +206,6 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
     override fun onClick(v: View?) {
 
     }
-
-
-    /**
-     * Connect the application with BLE device with selected device address.
-     *//*
-    private fun connectDevice() {
-        Handler().postDelayed({
-            ConnectionManagerBLE.initBLEService(this@MainActivity)
-            if (ConnectionManagerBLE.connect(mDeviceAddress)) {
-                Toast.makeText(this@MainActivity, "DEVICE CONNECTED", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@MainActivity, "DEVICE CONNECTION FAILED", Toast.LENGTH_SHORT).show()
-            }
-        }, 100)
-    }*/
 
 
     private fun callOneTimeWorkRequest(){

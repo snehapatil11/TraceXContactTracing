@@ -177,14 +177,7 @@ class DeviceManager(private val context: Context) {
     ) {
         val data = characteristic.value
 
-
-        //val rollingId = data.sliceArray(0 until CryptoUtil.KEY_LENGTH).base64EncodedString()
-        //val meta = data.sliceArray(CryptoUtil.KEY_LENGTH until CryptoUtil.KEY_LENGTH * 2).base64EncodedString()
         deviceStatusListener?.onDataReceived(scanResult.device, characteristic.value)
-
-        //val day = CryptoUtil.currentDayNumber()
-        //BtContactsManager.addContact(rollingId, day, BtEncounter(scanResult.rssi, meta))
-
 
     }
 
@@ -204,16 +197,12 @@ class DeviceManager(private val context: Context) {
         }
 
         if (!context.packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            //insertLogs(ADV_TAG, "Bluetooth LE is not supported")
-
             return false
         }
 
         val bluetoothLeAdvertiser: BluetoothLeAdvertiser? =
             bluetoothManager.adapter.bluetoothLeAdvertiser
         if (bluetoothLeAdvertiser == null) {
-            //insertLogs(ADV_TAG, "Bluetooth LE advertiser is unavailable")
-
             return false
         }
 
@@ -256,8 +245,6 @@ class DeviceManager(private val context: Context) {
 
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-            //insertLogs(ADV_TAG, "Advertising has started")
-
             if (!startBleServer()) {
                 //insertLogs(ADV_TAG, "Unable to create GATT server")
             }
@@ -313,7 +300,6 @@ class DeviceManager(private val context: Context) {
                         ByteArray(100)
                     )
 
-                    //context.logEvent("sent_rpi_adv")
                 }
                 else -> {
                     bluetoothGattServer?.sendResponse(

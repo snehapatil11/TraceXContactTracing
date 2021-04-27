@@ -70,25 +70,16 @@ class BLEService: Service() {
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
         override fun handleMessage(msg: Message) {
-            //background work here
             try {
                 startBleService()
 
             } catch (e: InterruptedException) {
-                // Restore interrupt status.
                 Thread.currentThread().interrupt()
             }
         }
     }
 
     override fun onCreate() {
-
-        /*if (deviceManager != null) {
-            bluetoothState =
-                if (deviceManager.checkBluetooth() == Enums.ENABLED) BluetoothAdapter.STATE_ON
-                else BluetoothAdapter.STATE_OFF
-        }
-        registerReceiver(bluetoothReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))*/
 
         HandlerThread("ServiceStartArguments", Process.BLUETOOTH_UID).apply {
             start()
@@ -129,8 +120,6 @@ class BLEService: Service() {
                     getString(R.string.background_channel_name),
                     IMPORTANCE_LOW
                 )
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             notificationManager.createNotificationChannel(channel)
         }
 

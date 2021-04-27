@@ -80,6 +80,10 @@ class ContacttracingFragment : Fragment() {
             button.setTextColor(Color.parseColor("#ffffff"))
 
             button.setOnClickListener {
+                button.setBackgroundColor(Color.parseColor("#6200EE"))
+                button.setText("Enable Contact Tracing")
+                button.setTextColor(Color.parseColor("#ffffff"))
+
                 context?.stopService(serviceIntent)
                 BLEService.isAppInForeground = false
                 //parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
