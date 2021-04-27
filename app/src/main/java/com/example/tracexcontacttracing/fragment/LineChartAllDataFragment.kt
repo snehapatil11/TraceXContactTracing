@@ -66,12 +66,20 @@ class LineChartAllDataFragment : Fragment(){
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false
         lineChart?.getLegend()?.setEnabled(false);
-        //barChart?.xAxis?.axisMinimum = 0f
-
-        // barChart?.groupBars(0f, groupSpace, barSpace)
+        lineChart?.getAxisRight()?.setDrawGridLines(false);
+        lineChart?.getAxisLeft()?.setDrawGridLines(false);
+        lineChart?.getXAxis()?.setDrawGridLines(false);
         val xAxis = lineChart?.xAxis
         xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
+
+        val rightYAxis = lineChart!!.axisRight
+        rightYAxis.isEnabled = false
+
+        //xAxis?.setDrawGridLines(false);
+
+        //val yAxis = lineChart?.y
+
         /*
         object : ValueFormatter() {
         override fun getFormattedValue(value: Float, axis: AxisBase): String {
