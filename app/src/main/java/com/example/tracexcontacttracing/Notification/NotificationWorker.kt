@@ -30,7 +30,6 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
     companion object {
         const val CHANNEL_ID = "TraceX_Channel_ID"
-        const val NOTIFICATION_ID = 1
     }
 
 
@@ -49,6 +48,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
     private fun showNotification(exposedDates: ArrayList<Long>) {
 
         createNotificationChannel()
+        var NOTIFICATION_ID = 1
 
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -71,8 +71,9 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
                     .bigText(msg))
 
             with(NotificationManagerCompat.from(applicationContext)){
-                notify(NOTIFICATION_ID+1, notification.build())
+                notify(NOTIFICATION_ID, notification.build())
             }
+            NOTIFICATION_ID += 1
 
         }
 
