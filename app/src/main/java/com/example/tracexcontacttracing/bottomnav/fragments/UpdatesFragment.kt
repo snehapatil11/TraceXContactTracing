@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tracexcontacttracing.R
@@ -76,7 +78,7 @@ class UpdatesFragment : Fragment() {
         val textViewTodayDate = view.findViewById<TextView>(R.id.datetoday);
         val textViewVaccineInitiated = view.findViewById<TextView>(R.id.vaccine1);
         val textViewVaccineCompleted = view.findViewById<TextView>(R.id.vaccine2);
-       // val viewTableButton = view.findViewById<TextView>(R.id.viewTableButton);
+        val viewTableButton = view.findViewById<AppCompatImageButton>(R.id.viewTableButton);
         StrictMode.enableDefaults();
         StrictMode.allowThreadDiskReads();
         StrictMode.allowThreadDiskWrites();
@@ -144,9 +146,9 @@ class UpdatesFragment : Fragment() {
                 viewPager.setCurrentItem(tab.position, true)
             }).attach()
 
-        //viewTableButton.setOnClickListener {
-        //    replaceFragment(StateDataTableFragment())
-        //}
+        viewTableButton.setOnClickListener {
+            replaceFragment(StateDataTableFragment())
+        }
 
         return view;
     }
