@@ -71,7 +71,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="140dp"
                                     android:layout_marginTop="32dp"
-                                    android:text="Users uploaded data today"
+                                    android:text="@string/users_uploaded_data"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,6 +118,7 @@
                                     android:layout_marginStart="44dp"
                                     android:layout_marginTop="12dp"
                                     android:layout_marginEnd="4dp"
+                                    android:background="#FFFFFF"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.75"
                                     app:layout_constraintStart_toEndOf="@+id/nationalText"
@@ -131,7 +132,7 @@
                                     android:layout_marginStart="35dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginEnd="102dp"
-                                    android:text="Tap for state breakdown"
+                                    android:text="@string/tap"
                                     android:textColor="#3F51B5"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -144,7 +145,7 @@
                                     android:layout_marginStart="50dp"
                                     android:layout_marginTop="16dp"
                                     android:layout_marginEnd="112dp"
-                                    android:text="The national picture"
+                                    android:text="@string/national_picture"
                                     android:textSize="18sp"
                                     android:textStyle="bold"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -185,7 +186,7 @@
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginEnd="229dp"
-                                    android:text="Daily Confirmed Cases"
+                                    android:text="@string/daily_confirmed_cases"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -250,7 +251,7 @@
                                     android:layout_marginStart="247dp"
                                     android:layout_marginTop="112dp"
                                     android:layout_marginEnd="40dp"
-                                    android:text="Vaccination  Completed"
+                                    android:text="@string/vaccination_completed"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -263,7 +264,7 @@
                                     android:layout_marginStart="35dp"
                                     android:layout_marginTop="108dp"
                                     android:layout_marginEnd="247dp"
-                                    android:text="Vaccination  Initiated"
+                                    android:text="@string/vaccination_initiated"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -330,7 +331,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="232dp"
                                     android:layout_marginTop="132dp"
-                                    android:text="New Deaths"
+                                    android:text="@string/new_deaths"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -340,7 +341,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="108dp"
                                     android:layout_marginTop="132dp"
-                                    android:text="New Cases"
+                                    android:text="@string/new_cases"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -425,7 +426,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="108dp"
                                     android:layout_marginTop="72dp"
-                                    android:text="Total Cases"
+                                    android:text="@string/total_cases"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -435,7 +436,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="240dp"
                                     android:layout_marginTop="72dp"
-                                    android:text="Total Deaths"
+                                    android:text="@string/total_deaths"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>

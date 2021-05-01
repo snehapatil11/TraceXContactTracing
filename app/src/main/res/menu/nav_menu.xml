@@ -5,7 +5,7 @@
         android:id="@+id/ic_updatetab"
         android:enabled="true"
         android:icon="@drawable/ic_updatestab"
-        android:title="COVID Updates" />
+        android:title="Updates" />
 
     <item
         android:id="@+id/ic_contacttracing"
@@ -23,6 +23,6 @@
         android:id="@+id/ic_notification"
         android:enabled="true"
         android:icon="@drawable/ic_notification"
-        android:title="Exposure Alerts" />
+        android:title="Exposures" />
 
 </menu>

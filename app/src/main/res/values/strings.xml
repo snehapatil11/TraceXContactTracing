@@ -81,4 +81,16 @@
     <string name="read_more">Read More</string>
     <string name="consent_message">If you have tested positive with COVID-19, it\'s a good idea to upload other users\' devices data that you have been in close contact with so they can be notified and take preventive measures. We will not upload any data related to your personal information.</string>
 
+    <!--Covid Updates-->
+    <string name="total_cases">Total Cases</string>
+    <string name="total_deaths">Total Deaths</string>
+    <string name="new_cases">New Cases</string>
+    <string name="new_deaths">New Deaths</string>
+    <string name="national_picture">The national picture</string>
+    <string name="tap">Tap for state breakdown</string>
+    <string name="users_uploaded_data">Users uploaded data today</string>
+    <string name="vaccination_initiated">Vaccination  Initiated</string>
+    <string name="vaccination_completed">Vaccination  Completed</string>
+    <string name="daily_confirmed_cases">Daily Confirmed Cases</string>
+
 </resources>

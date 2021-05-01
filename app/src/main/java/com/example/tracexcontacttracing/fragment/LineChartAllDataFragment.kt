@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.data.CovidMonthlyStatsTuple
@@ -60,8 +61,10 @@ class LineChartAllDataFragment : Fragment(){
         dataSet.setDrawValues(false)
         dataSet.setDrawFilled(true)
         dataSet.lineWidth = 3f
-        dataSet.fillColor = R.color.colorPrimaryDark
-        dataSet.fillAlpha = R.color.colorPrimary
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setDrawCircles(false)
+        dataSet.color = ContextCompat.getColor(context!!, R.color.orange)
+        dataSet.fillColor = ContextCompat.getColor(context!!, R.color.lightOrange)
 
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false

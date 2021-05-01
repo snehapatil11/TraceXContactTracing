@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.tracexcontacttracing.R
 import com.example.tracexcontacttracing.dao.TimeSeriesCovidDataDao
@@ -60,8 +61,10 @@ class LineChart2MonthsDataFragment : Fragment(){
         dataSet.setDrawValues(false)
         dataSet.setDrawFilled(true)
         dataSet.lineWidth = 3f
-        dataSet.fillColor = R.color.colorPrimaryDark
-        dataSet.fillAlpha = R.color.colorPrimary
+        dataSet.setDrawCircles(false)
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.color = ContextCompat.getColor(context!!, R.color.orange)
+        dataSet.fillColor = ContextCompat.getColor(context!!, R.color.lightOrange)
 
         lineChart?.getAxisRight()?.setDrawGridLines(false);
         lineChart?.getAxisLeft()?.setDrawGridLines(false);
@@ -69,22 +72,13 @@ class LineChart2MonthsDataFragment : Fragment(){
         lineChart?.setTouchEnabled(true)
         lineChart?.description?.isEnabled = false
         lineChart?.getLegend()?.setEnabled(false);
-        //barChart?.xAxis?.axisMinimum = 0f
-
-        // barChart?.groupBars(0f, groupSpace, barSpace)
         val xAxis = lineChart?.xAxis
         xAxis?.valueFormatter =  IndexAxisValueFormatter(labels)
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
 
         val rightYAxis = lineChart!!.axisRight
         rightYAxis.isEnabled = false
-        /*
-        object : ValueFormatter() {
-        override fun getFormattedValue(value: Float, axis: AxisBase): String {
-            return
-        }
-    }
-         */
+
 
         lineChart?.animateY(500)
         lineChart?.invalidate();
