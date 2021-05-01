@@ -34,7 +34,7 @@
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         android:visibility="visible"
-        app:elevation="10dp"
+        app:elevation="15dp"
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="#fff"
         app:itemTextColor="#fff"

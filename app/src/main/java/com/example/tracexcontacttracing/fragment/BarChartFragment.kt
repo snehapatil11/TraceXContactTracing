@@ -73,7 +73,7 @@ class BarChartFragment : Fragment(){
         barChart?.getXAxis()?.setDrawGridLines(false);
 
         //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
-        barDataSet.color = resources.getColor(R.color.colorAccent)
+        barDataSet.color = resources.getColor(R.color.orange)
 
         val xAxis = barChart?.xAxis
         xAxis?.valueFormatter = IndexAxisValueFormatter(labels)

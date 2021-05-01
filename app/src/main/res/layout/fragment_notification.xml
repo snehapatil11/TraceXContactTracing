@@ -15,16 +15,12 @@
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:id="@+id/NotificationTitleImg"
-            android:layout_width="60dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
-            android:background="#E196B597"
-            android:contentDescription="@string/notifications_title"
-            android:src="@drawable/ic_notification"
-            app:layout_constraintEnd_toStartOf="@+id/NotificationTitleTextView"
+            android:id="@+id/notificationIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_notifications_black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,17 +28,14 @@
             android:id="@+id/NotificationTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="129dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
             android:text="@string/notifications_title"
-            android:textColor="#E196B597"
-            android:textSize="36sp"
+            android:textColor="#E1050505"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/NotificationTitleImg"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
