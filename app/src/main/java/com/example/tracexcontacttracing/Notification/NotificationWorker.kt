@@ -100,7 +100,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):Worker(cont
 
         val resultdate = exposedDates?.let { Date(it) }
         val msg = "This message is to inform you that you have been exposed to a person who tested positive for Coronavirus 19 (COVID-19) on " + resultdate + ". " +
-                "This person is home and we suggest you to take preventive measures as per DC Health guidelines."
+                "This person is home and we suggest you to take preventive measures as per CDC Health guidelines."
         return msg
     }
 

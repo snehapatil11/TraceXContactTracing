@@ -212,9 +212,9 @@ class MainActivity : AppCompatActivity(), OnDeviceScanListener, View.OnClickList
 
         val currentDate = Calendar.getInstance()
         val dueDate = Calendar.getInstance()
-        // Set Execution around 03:27:00 PM
-        dueDate.set(Calendar.HOUR_OF_DAY, 15)
-        dueDate.set(Calendar.MINUTE, 55)
+        // Set Execution around 09:00:00 AM
+        dueDate.set(Calendar.HOUR_OF_DAY, 9)
+        dueDate.set(Calendar.MINUTE, 0)
         dueDate.set(Calendar.SECOND, 0)
         if (dueDate.before(currentDate)) {
             dueDate.add(Calendar.HOUR_OF_DAY, 24)
