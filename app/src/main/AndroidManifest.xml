@@ -16,11 +16,11 @@
     <application
         android:name="com.example.tracexcontacttracing.TraceXApp"
         android:allowBackup="true"
-        android:icon="@drawable/im_tracex_icon"
+        android:icon="@mipmap/ic_tracex"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/im_tracex_icon"
+        android:roundIcon="@mipmap/ic_tracex_round"
         android:supportsRtl="true"
-        android:logo="@drawable/im_tracex_icon"
+        android:logo="@mipmap/ic_tracex"
         android:theme="@style/AppTheme">
         <activity android:name=".GetData"></activity>
         <activity android:name=".MainActivity">
