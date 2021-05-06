@@ -120,26 +120,30 @@ class CheckinFragment : Fragment() {
     }
 
     private fun retrieveItemsTest() {
+        var count = 0
         val query = database.collection("exposed_devices_test")
 
-        val start = System.nanoTime()
+        val start = System.currentTimeMillis()
         val items: ArrayList<Map<String, Any>> = ArrayList()
         query.get().addOnSuccessListener { result ->
             for (document in result) {
                 Log.d(
                     TAG,
-                    "${document.id} => ${document.data} || finished in ${System.nanoTime() - start}"
+                    "${document.id} => ${document.data} || finished in ${System.currentTimeMillis() - start} ms"
                 )
                 items.add(document.data)
+                count += 1
             }
         }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Error getting documents: ", exception)
-            }
+        .addOnFailureListener { exception ->
+            Log.d(TAG, "Error getting documents: ", exception)
+        }
+
+        Log.d(TAG, "Retrieved $count documents")
     }
 
     private fun retrieveItemsMatchTest() {
-        val start = System.nanoTime()
+        val start = System.currentTimeMillis()
         val deviceDao = RoomDb.getAppDatabase(this.requireContext())?.deviceDao()
         val devices = deviceDao?.getDeviceData()
 
@@ -149,7 +153,7 @@ class CheckinFragment : Fragment() {
                     if (it.deviceId == document.data.get("deviceId")) {
                         Log.d(
                             TAG,
-                            "Found device ID in database: ${document.data.get("deviceId")} || finished in ${System.nanoTime() - start}"
+                            "Found device ID in database: ${document.data.get("deviceId")} || finished in ${System.currentTimeMillis() - start} ms"
                         )
                     }
                 }
@@ -168,8 +172,8 @@ class CheckinFragment : Fragment() {
             "modifiedAt" to device.modifiedAt
         )
 
-//        database.collection("exposed_devices")
-        database.collection("exposed_devices_test")
+        database.collection("exposed_devices")
+//        database.collection("exposed_devices_test")
             .add(deviceData)
             .addOnSuccessListener { documentReference ->
                 Log.d(
@@ -179,8 +183,7 @@ class CheckinFragment : Fragment() {
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
-        Toast.makeText(context, "Device ${device.deviceId} Data Uploaded", Toast.LENGTH_SHORT)
-            .show()
+        Log.i(TAG, "Uploaded device ${device.deviceId} data")
     }
 
     private fun simulateDeviceUpload() {
@@ -210,12 +213,15 @@ class CheckinFragment : Fragment() {
 //            deviceDao?.insert(device)
 //        }
 
-        val start = System.nanoTime()
+        val start = System.currentTimeMillis()
         devices?.forEach {
             uploadDevice(it)
             Log.d(TAG, "uploaded $it")
         }
-        Log.i(TAG, "Uploading finished in ${System.nanoTime() - start}")
+
+        Toast.makeText(context, "Uploaded ${devices?.size} device records", Toast.LENGTH_SHORT)
+            .show()
+        Log.i(TAG, "Uploading finished in ${System.currentTimeMillis() - start} ms")
     }
 
 
