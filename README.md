@@ -15,6 +15,8 @@ TraceX also provides information from reliable sources through interactive graph
 ### Demo
 Web Application to download the android apk: [TraceX](http://tracex-contacttracing.ml/)
 
+YouTube Video: [Demo Video](https://www.youtube.com/watch?v=WlCmJrduqjA&t=275s)
+
 ### Architecture of the project
 ![CMPE 295 Proejct](https://user-images.githubusercontent.com/39228894/118232036-d0df4100-b444-11eb-9e4b-f7b15dad320c.png)
 
